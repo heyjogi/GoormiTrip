@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>회원가입</title>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form method="POST" th:action="@{/signup}" id="signupForm">
+        <label for="email">Email: </label>
+        <input id="email" type="email" name="email" /><br />
+
+        <label for="username">Password: </label>
+        <input id="username" type="password" name="password" /><br />
+
+        <label for="phone">Phone Number: </label>
+        <input id="phone" type="number" name="phone" /><br />
+
+        <input type="submit" value="Register" />
+    </form>
+</body>
+</html>

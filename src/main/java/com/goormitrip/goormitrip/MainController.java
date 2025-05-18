@@ -9,7 +9,11 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("message", "Welcome to GoormiTrip!");
         return "main";
+    }
+
+    @GetMapping("/signup")
+    public String signupForm() {
+        return "signup";
     }
 }
