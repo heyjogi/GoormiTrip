@@ -33,7 +33,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email; // 또는 username 필드
+        return email;
     }
 
     @Override

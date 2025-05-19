@@ -13,29 +13,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MainController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public MainController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+//    private final UserRepository userRepository;
+//    private final PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    public MainController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+//        this.userRepository = userRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     @GetMapping("/")
     public String home(Model model) {
         return "main";
     }
 
-    @GetMapping("/signup")
-    public String signupForm() {
-        return "signup";
-    }
-
-    @PostMapping("/signup")
-    public String processSignup(SignupRequestDto signupRequestDto) {
-        userRepository.save(signupRequestDto.toUser(passwordEncoder));
-        return "redirect:/login";
-    }
+//    @GetMapping("/signup")
+//    public String signupForm() {
+//        return "signup";
+//    }
+//
+//    @PostMapping("/signup")
+//    public String processSignup(SignupRequestDto signupRequestDto) {
+//        userRepository.save(signupRequestDto.toUser(passwordEncoder));
+//        return "redirect:/login";
+//    }
 
 }
