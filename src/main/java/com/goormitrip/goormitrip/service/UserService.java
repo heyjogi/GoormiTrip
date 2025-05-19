@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void processSignup(SignupRequestDto signupRequestDto) {
         userRepository.save(signupRequestDto.toUser(passwordEncoder));
