@@ -1,6 +1,6 @@
 package com.goormitrip.goormitrip.dto;
 
-import com.goormitrip.goormitrip.domain.User;
+import com.goormitrip.goormitrip.domain.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +21,8 @@ public class SignupRequestDto {
 
     private LocalDateTime createdAt;
 
-    public User toUser(PasswordEncoder passwordEncoder) {
-        return User.builder()
+    public UserEntity toUser(PasswordEncoder passwordEncoder) {
+        return UserEntity.builder()
                 .email(email)
                 .phone(phone)
                 .password(passwordEncoder.encode(password))
