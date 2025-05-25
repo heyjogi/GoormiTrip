@@ -11,7 +11,7 @@ RUN apk add --no-cache tzdata \
 WORKDIR /app
 
 # 4. JAR 파일 복사
-COPY build/libs/GoormiTrip-0.0.1-SNAPSHOT.jar app.jar
+COPY ./build/libs/*.jar app.jar
 
 # 5. 포트 오픈
 EXPOSE 8080
