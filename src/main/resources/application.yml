@@ -3,7 +3,7 @@ spring:
     name: goormitrip
 
   profiles:
-    active: dev
+    active: prod
 
   jpa:
     show-sql: true
