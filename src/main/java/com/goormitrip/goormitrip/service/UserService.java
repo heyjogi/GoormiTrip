@@ -1,6 +1,6 @@
 package com.goormitrip.goormitrip.service;
 
-import com.goormitrip.goormitrip.dto.SignupRequestDto;
+import com.goormitrip.goormitrip.dto.SignupRequest;
 import com.goormitrip.goormitrip.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +16,8 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void processSignup(SignupRequestDto signupRequestDto) {
-        userRepository.save(signupRequestDto.toUser(passwordEncoder));
+    public void processSignup(SignupRequest signupRequest) {
+        userRepository.save(signupRequest.toUser(passwordEncoder));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.goormitrip.goormitrip.controller;
 
-import com.goormitrip.goormitrip.dto.SignupRequestDto;
+import com.goormitrip.goormitrip.dto.SignupRequest;
 import com.goormitrip.goormitrip.repository.UserRepository;
 import com.goormitrip.goormitrip.service.UserService;
 import lombok.AllArgsConstructor;
@@ -23,9 +23,9 @@ public class SignupController {
     }
 
     @PostMapping("/signup")
-    public String processSignup(SignupRequestDto signupRequestDto) {
-        userService.processSignup(signupRequestDto);
-        userRepository.save(signupRequestDto.toUser(passwordEncoder));
+    public String processSignup(SignupRequest signupRequest) {
+        userService.processSignup(signupRequest);
+        userRepository.save(signupRequest.toUser(passwordEncoder));
         return "redirect:/login";
     }
 }
