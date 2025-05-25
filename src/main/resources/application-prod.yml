@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mysql://prod-db-host:3306/goormitrip
+    username: prod_user
+    password: your_prod_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
