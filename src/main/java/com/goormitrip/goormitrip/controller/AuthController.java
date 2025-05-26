@@ -3,9 +3,7 @@ package com.goormitrip.goormitrip.controller;
 import com.goormitrip.goormitrip.dto.AuthRequest;
 import com.goormitrip.goormitrip.dto.AuthResponse;
 import com.goormitrip.goormitrip.dto.SignupRequest;
-import com.goormitrip.goormitrip.security.JwtUtils;
 import com.goormitrip.goormitrip.service.AuthService;
-import com.goormitrip.goormitrip.repository.UserRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,12 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class AuthController {
 
     private final AuthService authService;
 

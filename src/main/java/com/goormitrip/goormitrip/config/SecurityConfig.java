@@ -57,7 +57,10 @@
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                     auth.requestMatchers(
-                        new AntPathRequestMatcher("/users/**")).permitAll().anyRequest().authenticated()
+                        new AntPathRequestMatcher("/"),
+                        new AntPathRequestMatcher("/users/**"),
+                        new AntPathRequestMatcher("/auth/**")
+                    ).permitAll().anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
