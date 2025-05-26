@@ -59,7 +59,8 @@
                     auth.requestMatchers(
                         new AntPathRequestMatcher("/"),
                         new AntPathRequestMatcher("/users/**"),
-                        new AntPathRequestMatcher("/auth/**")
+                        new AntPathRequestMatcher("/auth/**"),
+                        new AntPathRequestMatcher("/error")
                     ).permitAll().anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
