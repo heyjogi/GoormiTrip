@@ -55,7 +55,7 @@ public class AuthService {
         return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
     }
 
-    public UserDetails login(AuthRequest request) {
+    public AuthResponse login(AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
