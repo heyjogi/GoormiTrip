@@ -3,12 +3,12 @@ package com.goormitrip.goormitrip.product.domain;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 //import com.goormitrip.domain.User;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
