@@ -40,7 +40,7 @@ public class UserEntity implements UserDetails {
 	public enum UserRole {
 		USER, ADMIN
 	}
-
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(new SimpleGrantedAuthority(("ROLE_" + role.name())));
