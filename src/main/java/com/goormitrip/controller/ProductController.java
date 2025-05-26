@@ -2,6 +2,7 @@ package com.goormitrip.controller;
 
 import com.goormitrip.domain.Product;
 import com.goormitrip.domain.ProductStatus;
+import com.goormitrip.dto.CompareRequest;
 import com.goormitrip.service.ProductService;
 
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,11 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Product deleted successfully");
+    }
+
+    @PostMapping("/compare")
+    public List<Product> compareProducts(@RequestBody CompareRequest request) {
+        return productService.compareProducts(request.getIds());
     }
 
 }

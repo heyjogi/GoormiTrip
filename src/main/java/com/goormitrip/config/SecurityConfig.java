@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-     @Bean
+    @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User
             .withUsername("user")

@@ -24,4 +24,7 @@ public interface ProductService {
     Product createProduct(Product product);
 
     void deleteProduct(Long id);
+
+    List<Product> compareProducts(List<Long> ids);
+
 }

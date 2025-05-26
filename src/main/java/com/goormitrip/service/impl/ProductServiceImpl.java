@@ -117,5 +117,10 @@ public class ProductServiceImpl implements ProductService {
             .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         productRepository.delete(product);
     }
+
+    @Override
+    public List<Product> compareProducts(List<Long> ids) {
+        return productRepository.findAllById(ids);
+    }
 }
 
