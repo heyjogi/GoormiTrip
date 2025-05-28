@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   deploy:
+    if: github.repository == 'heyjogi/GoormiTrip'
     name: Deploy
     runs-on: ubuntu-latest
     environment: production

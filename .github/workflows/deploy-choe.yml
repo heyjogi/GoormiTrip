@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   deploy:
-    if: github.actor == '46112'
+    if: github.repository == '46112/GoormiTrip'
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
