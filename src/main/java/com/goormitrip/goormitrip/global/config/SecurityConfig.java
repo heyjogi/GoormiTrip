@@ -58,6 +58,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth ->
 				auth.requestMatchers(
 					new AntPathRequestMatcher("/"),
+					new AntPathRequestMatcher("/health"),
 					new AntPathRequestMatcher("/users/**"),
 					new AntPathRequestMatcher("/auth/**"),
 					new AntPathRequestMatcher("/error"),
