@@ -9,7 +9,7 @@ env:
   ECR_REPOSITORY: goormitrip
   ECS_SERVICE: goormitrip-family-service
   ECS_CLUSTER: goormitrip-cluster
-  ECS_TASK_DEFINITION: goormitrip-family-revision1.json
+  ECS_TASK_DEFINITION: .aws/goormitrip-family-revision1.json
   CONTAINER_NAME: goormitrip-container
 
 permissions:
