@@ -7,9 +7,9 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: goormitrip
-  ECS_SERVICE: goormitrip-family-service
+  ECS_SERVICE: goormitrip-service
   ECS_CLUSTER: goormitrip-cluster
-  ECS_TASK_DEFINITION: .aws/goormitrip-family-revision1.json
+  ECS_TASK_DEFINITION: .aws/task-definition.json
   CONTAINER_NAME: goormitrip-container
 
 permissions:
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   deploy:
-    if: github.repository == 'heyjogi/GoormiTrip'
+    if: github.repository == '46112/GoormiTrip'
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
