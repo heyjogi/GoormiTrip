@@ -37,10 +37,6 @@ public class UserEntity implements UserDetails {
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 
-	public enum UserRole {
-		USER, ADMIN
-	}
-	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(new SimpleGrantedAuthority(("ROLE_" + role.name())));
