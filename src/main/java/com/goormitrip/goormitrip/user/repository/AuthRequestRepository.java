@@ -2,7 +2,7 @@ package com.goormitrip.goormitrip.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.goormitrip.goormitrip.user.dto.AuthRequest;
+import com.goormitrip.goormitrip.user.domain.AuthRequestEntity;
 
-public interface AuthRequestRepository extends JpaRepository<AuthRequest, String> {
+public interface AuthRequestRepository extends JpaRepository<AuthRequestEntity, String> {
 }
