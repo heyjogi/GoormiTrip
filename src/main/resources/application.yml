@@ -1,7 +1,6 @@
 spring:
   application:
     name: goormitrip
-
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:prod}
 
@@ -15,3 +14,4 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET_KEY}
+    expiration: 1800000
