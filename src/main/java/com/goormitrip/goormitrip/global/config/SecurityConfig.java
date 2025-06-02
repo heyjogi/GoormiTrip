@@ -62,7 +62,9 @@ public class SecurityConfig {
 					new AntPathRequestMatcher("/users/**"),
 					new AntPathRequestMatcher("/auth/**"),
 					new AntPathRequestMatcher("/error"),
-					new AntPathRequestMatcher("/api/products/**")
+					new AntPathRequestMatcher("/api/products/**"),
+					new AntPathRequestMatcher("/verification/phone/**"),
+					new AntPathRequestMatcher("/kakao/webhook")
 				).permitAll().anyRequest().authenticated()
 			)
 			.authenticationProvider(authenticationProvider())
