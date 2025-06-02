@@ -1,6 +1,6 @@
 package com.goormitrip.goormitrip.global.util;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,5 +17,5 @@ public abstract class BaseTimeEntity {
 
 	@CreatedDate
 	@Column(nullable = false, updatable = false)
-	private Instant createdAt;
+	private LocalDateTime createdAt;
 }
