@@ -1,6 +1,8 @@
 package com.goormitrip.goormitrip.user.service;
 
+import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
+import com.goormitrip.goormitrip.user.domain.UserRole;
 import com.goormitrip.goormitrip.user.dto.AuthRequest;
 import com.goormitrip.goormitrip.user.dto.AuthResponse;
 import com.goormitrip.goormitrip.user.dto.SignupRequest;
@@ -39,17 +41,18 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhone(request.getPhone());
-        user.setRole(UserEntity.UserRole.USER);
+        user.setRole(UserRole.USER);
 
         userRepository.save(user);
 
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+        // 회원가입 후 인증 처리 없이도 JWT 생성 가능
+        // Authentication authentication = authenticationManager.authenticate(
+        //     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        // );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        CustomUserDetails userDetails = new CustomUserDetails(user);
         String jwt = jwtUtils.generateToken(userDetails);
 
         return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
@@ -60,13 +63,11 @@ public class AuthService {
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        UserEntity user = userDetails.getUser();
 
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         String jwt = jwtUtils.generateToken(userDetails);
-
-        UserEntity user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new RuntimeException("이메일 또는 비밀번호가 잘못되었습니다."));
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
     }

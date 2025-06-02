@@ -1,14 +1,11 @@
 spring:
   application:
     name: goormitrip
-
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:prod}
 
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -17,3 +14,4 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET_KEY}
+    expiration: 1800000
