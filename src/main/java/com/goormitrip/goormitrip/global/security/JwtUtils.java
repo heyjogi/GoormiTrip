@@ -20,10 +20,10 @@ public class JwtUtils {
 
 	private SecretKey key;
 
-	@Value("${app.jwt.secret}")
+	@Value("${JWT_SECRET_KEY}")
 	private String jwtSecret;
 
-	@Value("${app.jwt.expiration}")
+	@Value("${app.jwt.expiration:1800000}")
 	private long jwtExpiration;
 
 	@PostConstruct
