@@ -45,13 +45,6 @@ public class AuthService {
 
         userRepository.save(user);
 
-        // 회원가입 후 인증 처리 없이도 JWT 생성 가능
-        // Authentication authentication = authenticationManager.authenticate(
-        //     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        // );
-
-        // SecurityContextHolder.getContext().setAuthentication(authentication);
-
         CustomUserDetails userDetails = new CustomUserDetails(user);
         String jwt = jwtUtils.generateToken(userDetails);
 
@@ -67,7 +60,6 @@ public class AuthService {
         UserEntity user = userDetails.getUser();
 
         String jwt = jwtUtils.generateToken(userDetails);
-        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
     }
