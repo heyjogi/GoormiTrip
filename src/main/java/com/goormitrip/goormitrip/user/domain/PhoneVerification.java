@@ -10,14 +10,14 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-public class AuthRequestEntity {
+public class PhoneVerification {
 
 	@Id
 	private String phone;
 
 	private boolean verified;
 
-	public AuthRequestEntity(String phone, boolean verified) {
+	public PhoneVerification(String phone, boolean verified) {
 		this.phone = phone;
 		this.verified = verified;
 	}
