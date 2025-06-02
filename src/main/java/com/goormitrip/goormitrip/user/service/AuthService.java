@@ -1,5 +1,6 @@
 package com.goormitrip.goormitrip.user.service;
 
+import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 import com.goormitrip.goormitrip.user.domain.UserRole;
 import com.goormitrip.goormitrip.user.dto.AuthRequest;
@@ -44,13 +45,13 @@ public class AuthService {
 
         userRepository.save(user);
 
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+        // Authentication authentication = authenticationManager.authenticate(
+        //     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        // );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        CustomUserDetails userDetails = new CustomUserDetails(user);
         String jwt = jwtUtils.generateToken(userDetails);
 
         return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
