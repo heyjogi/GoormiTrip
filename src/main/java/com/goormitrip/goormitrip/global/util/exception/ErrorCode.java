@@ -1,9 +1,9 @@
 package com.goormitrip.goormitrip.global.util.exception;
 
 public interface ErrorCode {
-	int status();
+	int getStatus();
 
-	String code();
+	String getCode();
 
-	String message();
+	String getMessage();
 }
