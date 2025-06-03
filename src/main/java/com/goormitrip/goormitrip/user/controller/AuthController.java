@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.goormitrip.goormitrip.global.util.ApiResponse;
+import com.goormitrip.goormitrip.global.util.response.ApiResponse;
 import com.goormitrip.goormitrip.user.dto.AuthRequest;
 import com.goormitrip.goormitrip.user.dto.SignupRequest;
 import com.goormitrip.goormitrip.user.service.AuthService;

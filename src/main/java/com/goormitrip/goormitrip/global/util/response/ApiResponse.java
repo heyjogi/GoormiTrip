@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.global.util;
+package com.goormitrip.goormitrip.global.util.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
