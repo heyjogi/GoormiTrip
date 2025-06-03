@@ -8,11 +8,11 @@ public record ApiResponse<T>(
 	T response,
 	ApiError error
 ) {
-	public static <T> ApiResponse<T> success(T data) {
+	private static <T> ApiResponse<T> success(T data) {
 		return new ApiResponse<>(true, data, null);
 	}
 
-	public static <T> ApiResponse<T> fail(final String message, final HttpStatus status) {
+	private static <T> ApiResponse<T> fail(final String message, final HttpStatus status) {
 		return new ApiResponse<>(false, null, new ApiError(message, status.value()));
 	}
 
