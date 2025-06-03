@@ -21,16 +21,18 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<?> handleBusiness(BusinessException ex) {
+		log.warn("Unhandled business exception: {}", ex.getMessage(), ex);
 		return ApiResponse.error(ex.getErrorCode());
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
-		String msg = ex.getBindingResult().getFieldErrors()
+		final String msg = ex.getBindingResult().getFieldErrors()
 			.stream()
 			.map(FieldError::getDefaultMessage)
 			.findFirst()
 			.orElse("잘못된 입력입니다.");
+		log.warn("Validation error: {}", msg);
 		return ApiResponse.error(msg, HttpStatus.BAD_REQUEST);
 	}
 

@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.goormitrip.goormitrip.global.util.response.ApiResponse;
 import com.goormitrip.goormitrip.user.exception.EmailDuplicateException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestControllerAdvice(basePackages = "com.goormitrip.goormitrip.user")
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class UserExceptionHandler {
 
 	@ExceptionHandler(EmailDuplicateException.class)
 	public ResponseEntity<?> handleUserNotFound(final EmailDuplicateException ex) {
+		log.warn("Email duplicate: {}", ex.getMessage());
 		return ApiResponse.error(ex.getErrorCode());
 	}
 }
