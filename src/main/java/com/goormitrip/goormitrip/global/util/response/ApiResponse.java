@@ -3,6 +3,8 @@ package com.goormitrip.goormitrip.global.util.response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.goormitrip.goormitrip.global.util.exception.ErrorCode;
+
 public record ApiResponse<T>(
 	boolean success,
 	T response,
@@ -22,5 +24,10 @@ public record ApiResponse<T>(
 
 	public static <T> ResponseEntity<ApiResponse<T>> error(final String message, final HttpStatus status) {
 		return ResponseEntity.status(status).body(fail(message, status));
+	}
+
+	public static <T> ResponseEntity<ApiResponse<T>> error(final ErrorCode errorCode) {
+		return ResponseEntity.status(errorCode.getStatus())
+			.body(fail(errorCode.getFormattedMessage(), errorCode.getStatus()));
 	}
 }
