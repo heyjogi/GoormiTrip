@@ -37,10 +37,10 @@ public class OAuthAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/** 공급자(GOOGLE·NAVER·KAKAO) */
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
-	private SocialProvider provider;
+	// /** 공급자(GOOGLE·NAVER·KAKAO) */
+	// @Enumerated(EnumType.STRING)
+	// @Column(nullable = false, length = 20)
+	// private SocialProvider provider;
 
 	/** 공급자 내부 사용자 식별자 */
 	@Column(name = "provider_user_id", nullable = false, length = 128)
