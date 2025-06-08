@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.goormitrip.goormitrip.global.util.response.ApiResponse;
 import com.goormitrip.goormitrip.user.exception.EmailDuplicateException;
+import com.goormitrip.goormitrip.user.exception.InvalidEmailFormatException;
+import com.goormitrip.goormitrip.user.exception.InvalidPasswordException;
+import com.goormitrip.goormitrip.user.exception.InvalidPhoneException;
+import com.goormitrip.goormitrip.user.exception.PhoneNotVerifiedException;
+import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException;
+import com.goormitrip.goormitrip.user.exception.RequiredTermsUncheckedException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +25,42 @@ public class UserExceptionHandler {
 	@ExceptionHandler(EmailDuplicateException.class)
 	public ResponseEntity<?> handleUserNotFound(final EmailDuplicateException ex) {
 		log.warn("Email duplicate: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(PhoneNotVerifiedException.class)
+	public ResponseEntity<?> handleUserPhoneNotVerified(final PhoneNotVerifiedException ex) {
+		log.warn("Phone not verified: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(InvalidPasswordException.class)
+	public ResponseEntity<?> handleUserInvalidPassword(final InvalidPasswordException ex) {
+		log.warn("Invalid password: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(RequiredTermsUncheckedException.class)
+	public ResponseEntity<?> handleUserRequiredTermsUnchecked(final RequiredTermsUncheckedException ex) {
+		log.warn("Required terms unchecked: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(InvalidEmailFormatException.class)
+	public ResponseEntity<?> handleUserInvalidEmailFormat(final InvalidEmailFormatException ex) {
+		log.warn("Invalid email format: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(InvalidPhoneException.class)
+	public ResponseEntity<?> handleUserInvalidPhone(final InvalidPhoneException ex) {
+		log.warn("Invalid phone number: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(PhoneVerificationFailedException.class)
+	public ResponseEntity<?> handleUserPhoneVerificationFailed(final PhoneVerificationFailedException ex) {
+		log.warn("Phone verification failed: {}", ex.getMessage());
 		return ApiResponse.error(ex.getErrorCode());
 	}
 }
