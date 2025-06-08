@@ -11,6 +11,7 @@ import com.goormitrip.goormitrip.user.exception.EmailDuplicateException;
 import com.goormitrip.goormitrip.user.exception.InvalidEmailFormatException;
 import com.goormitrip.goormitrip.user.exception.InvalidPasswordException;
 import com.goormitrip.goormitrip.user.exception.InvalidPhoneException;
+import com.goormitrip.goormitrip.user.exception.LoginFailedException;
 import com.goormitrip.goormitrip.user.exception.PhoneNotVerifiedException;
 import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException;
 import com.goormitrip.goormitrip.user.exception.RequiredTermsUncheckedException;
@@ -61,6 +62,12 @@ public class UserExceptionHandler {
 	@ExceptionHandler(PhoneVerificationFailedException.class)
 	public ResponseEntity<?> handleUserPhoneVerificationFailed(final PhoneVerificationFailedException ex) {
 		log.warn("Phone verification failed: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+	
+	@ExceptionHandler(LoginFailedException.class)
+	public ResponseEntity<?> handleUserPhoneVerificationFailed(final LoginFailedException ex) {
+		log.warn("Login failed: {}", ex.getMessage());
 		return ApiResponse.error(ex.getErrorCode());
 	}
 }
