@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goormitrip.goormitrip.user.domain.PhoneVerification;
 import com.goormitrip.goormitrip.user.dto.PhoneVerificationRequest;
+import com.goormitrip.goormitrip.user.exception.InvalidPhoneException;
+import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException;
 import com.goormitrip.goormitrip.user.repository.AuthRequestRepository;
 
 import jakarta.validation.Valid;
@@ -26,7 +28,7 @@ public class PhoneVerificationController {
 	public ResponseEntity<String> request(@RequestBody @Valid PhoneVerificationRequest request) {
 		String phone = request.getPhone();
 		if(isInvalidPhoneNumber(phone)) {
-			return ResponseEntity.badRequest().body("휴대폰 번호를 확인해주세요.");
+			throw new InvalidPhoneException();
 		}
 
 		authRequestRepository.save(new PhoneVerification(phone, false));
@@ -35,15 +37,18 @@ public class PhoneVerificationController {
 
 	@GetMapping("/verify")
 	public ResponseEntity<String> verify(@RequestParam("phone") String phone) {
-		if(isInvalidPhoneNumber(phone)) {
-			return ResponseEntity.badRequest().body("휴대폰 번호를 확인해주세요.");
+		if (isInvalidPhoneNumber(phone)) {
+			throw new InvalidPhoneException();
 		}
 
-		return authRequestRepository.findById(phone)
-			.filter(PhoneVerification::isVerified)
-			.map(a -> ResponseEntity.ok("인증되었습니다."))
-			.orElse(ResponseEntity.status(401).body("인증에 실패하였습니다."));
+		PhoneVerification verification = authRequestRepository.findById(phone)
+			.orElseThrow(PhoneVerificationFailedException::new);
 
+		if (!verification.isVerified()) {
+			throw new PhoneVerificationFailedException();
+		}
+
+		return ResponseEntity.ok("인증되었습니다.");
 	}
 
 	private boolean isInvalidPhoneNumber(String phone) {

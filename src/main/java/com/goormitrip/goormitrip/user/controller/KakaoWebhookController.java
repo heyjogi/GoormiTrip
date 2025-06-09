@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.goormitrip.goormitrip.user.domain.PhoneVerification;
+import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException;
 import com.goormitrip.goormitrip.user.repository.AuthRequestRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,18 +30,20 @@ public class KakaoWebhookController {
 			if (utterance != null && utterance.startsWith("인증")) {
 				String phone = utterance.replaceAll("[^0-9]","");
 
-				authRequestRepository.findById(phone).ifPresent((auth -> {
-					auth.setVerified(true);
-					authRequestRepository.save(auth);
-				}));
+				PhoneVerification verification = authRequestRepository.findById(phone)
+					.orElseThrow(PhoneVerificationFailedException::new);
+
+				verification.setVerified(true);
+				authRequestRepository.save(verification);
 
 				return responseMessage("인증되었습니다.");
+
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PhoneVerificationFailedException();
 		}
 
-		return responseMessage("인증에 실패하였습니다.");
+		throw new PhoneVerificationFailedException();
 	}
 
 	private ResponseEntity<Map<String, Object>> responseMessage(String text) {
