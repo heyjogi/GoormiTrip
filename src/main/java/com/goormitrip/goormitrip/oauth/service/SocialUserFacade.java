@@ -32,7 +32,7 @@ public class SocialUserFacade {
 		UserEntity user = UserEntity.builder()
 			.email(a.email())
 			.password("SOCIAL_LOGIN")
-			.role(UserRole.USER)
+			.role(UserRole.SOCIAL_USER)
 			.build();
 		userRepo.save(user);
 
