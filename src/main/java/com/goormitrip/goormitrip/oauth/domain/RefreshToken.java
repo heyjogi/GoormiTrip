@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.oauth;
+package com.goormitrip.goormitrip.oauth.domain;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -40,6 +40,14 @@ public class RefreshToken extends BaseTimeEntity {
 	@Column(name = "expiry_at", nullable = false)
 	private LocalDateTime expiryAt;
 
+	public static RefreshToken of(String token, UserEntity user, Duration ttl) {
+		return RefreshToken.builder()
+			.token(token)
+			.user(user)
+			.expiryAt(LocalDateTime.now().plus(ttl))
+			.build();
+	}
+
 	public boolean isExpired() {
 		return expiryAt.isBefore(LocalDateTime.now());
 	}
@@ -47,13 +55,5 @@ public class RefreshToken extends BaseTimeEntity {
 	public void rotate(String newToken, Duration ttl) {
 		this.token = newToken;
 		this.expiryAt = LocalDateTime.now().plus(ttl);
-	}
-
-	public static RefreshToken of(String token, UserEntity user, Duration ttl) {
-		return RefreshToken.builder()
-			.token(token)
-			.user(user)
-			.expiryAt(LocalDateTime.now().plus(ttl))
-			.build();
 	}
 }

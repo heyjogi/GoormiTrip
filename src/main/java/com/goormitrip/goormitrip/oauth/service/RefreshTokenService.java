@@ -1,10 +1,12 @@
-package com.goormitrip.goormitrip.oauth;
+package com.goormitrip.goormitrip.oauth.service;
 
 import java.time.Duration;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goormitrip.goormitrip.oauth.domain.RefreshToken;
+import com.goormitrip.goormitrip.oauth.repository.RefreshTokenRepository;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 import lombok.RequiredArgsConstructor;

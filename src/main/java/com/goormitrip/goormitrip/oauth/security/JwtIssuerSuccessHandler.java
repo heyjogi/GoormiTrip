@@ -11,7 +11,7 @@ import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.global.security.JwtTokenProvider;
 import com.goormitrip.goormitrip.global.security.TokenResponse;
 import com.goormitrip.goormitrip.global.util.response.ApiResponse;
-import com.goormitrip.goormitrip.oauth.RefreshTokenService;
+import com.goormitrip.goormitrip.oauth.service.RefreshTokenService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
