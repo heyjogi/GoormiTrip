@@ -22,7 +22,7 @@ public class CustomClientRegistrationConfig {
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 			.redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-			.scope("profile_nickname", "account_email")
+			.scope("profile_nickname", "account_email", "profile_image")
 			.authorizationUri("https://kauth.kakao.com/oauth/authorize")
 			.tokenUri("https://kauth.kakao.com/oauth/token")
 			.userInfoUri("https://kapi.kakao.com/v2/user/me")
