@@ -24,7 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		final UserEntity user = userRepository.findByEmail(email)
 			.orElseThrow(LoginFailedException::new);
-
 		if (user.isSocialUser()) {
 			throw new SocialLoginUserCannotLoginException();
 		}

@@ -3,6 +3,7 @@ package com.goormitrip.goormitrip.user.handler;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,6 +17,7 @@ import com.goormitrip.goormitrip.user.exception.PhoneNotVerifiedException;
 import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException;
 import com.goormitrip.goormitrip.user.exception.RequiredTermsUncheckedException;
 import com.goormitrip.goormitrip.user.exception.SocialLoginUserCannotLoginException;
+import com.goormitrip.goormitrip.user.exception.UserError;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,7 +67,7 @@ public class UserExceptionHandler {
 		log.warn("Phone verification failed: {}", ex.getMessage());
 		return ApiResponse.error(ex.getErrorCode());
 	}
-	
+
 	@ExceptionHandler(LoginFailedException.class)
 	public ResponseEntity<?> handleUserPhoneVerificationFailed(final LoginFailedException ex) {
 		log.warn("Login failed: {}", ex.getMessage());
@@ -76,5 +78,11 @@ public class UserExceptionHandler {
 	public ResponseEntity<?> handleSocialLoginUserCannotLogin(final SocialLoginUserCannotLoginException ex) {
 		log.warn("Social login user cannot login: {}", ex.getMessage());
 		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<?> handleBadCredentials(final BadCredentialsException ex) {
+		log.warn("Bad credentials: {}", ex.getMessage());
+		return ApiResponse.error(UserError.LOGIN_FAILED);
 	}
 }
