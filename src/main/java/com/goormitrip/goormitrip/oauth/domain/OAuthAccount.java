@@ -1,7 +1,6 @@
 package com.goormitrip.goormitrip.oauth.domain;
 
-import java.time.LocalDateTime;
-
+import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 import jakarta.persistence.Column;
@@ -30,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "oauth_account",
 	uniqueConstraints = @UniqueConstraint(
 		name = "uk_provider_uid", columnNames = {"provider", "provider_user_id"}))
-public class OAuthAccount {
+public class OAuthAccount extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +45,6 @@ public class OAuthAccount {
 	@Column(length = 320)
 	private String email;
 
-	private LocalDateTime createdAt;
-
-	/* 연관관계 주인: N : 1 */
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
