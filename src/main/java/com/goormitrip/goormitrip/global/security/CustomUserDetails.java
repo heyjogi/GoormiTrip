@@ -14,14 +14,12 @@ import lombok.Getter;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
-	private final UserEntity user;
 	private final Long id;
 	private final String email;
 	private final String password;
 	private final UserRole role;
 
 	public CustomUserDetails(UserEntity user) {
-		this.user = user;
 		this.id = user.getId();
 		this.email = user.getEmail();
 		this.password = user.getPassword();
