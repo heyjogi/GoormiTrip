@@ -37,7 +37,7 @@ public class JwtIssuerSuccessHandler implements AuthenticationSuccessHandler {
 
 		String access = tokenProvider.createAccessToken(userDetails.getId(), userDetails.getRole());
 		String refresh = tokenProvider.createRefreshToken(userDetails.getId());
-		refreshService.store(userDetails.toUserEntityForTokenStorage(), refresh);
+		refreshService.store(userDetails.getId(), refresh);
 
 		TokenResponse tokenResponse = new TokenResponse(access, refresh);
 		ApiResponse<?> apiResponse = createSuccessResponse(tokenResponse);

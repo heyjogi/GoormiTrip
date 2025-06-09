@@ -4,15 +4,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
-import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -32,18 +27,16 @@ public class RefreshToken extends BaseTimeEntity {
 	@Column(length = 256)
 	private String token;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id",
-		foreignKey = @ForeignKey(name = "fk_refresh_user"))
-	private UserEntity user;
+	@Column(name = "user_id", nullable = false)
+	private Long userId;
 
 	@Column(name = "expiry_at", nullable = false)
 	private LocalDateTime expiryAt;
 
-	public static RefreshToken of(String token, UserEntity user, Duration ttl) {
+	public static RefreshToken of(String token, Long userId, Duration ttl) {
 		return RefreshToken.builder()
 			.token(token)
-			.user(user)
+			.userId(userId)
 			.expiryAt(LocalDateTime.now().plus(ttl))
 			.build();
 	}

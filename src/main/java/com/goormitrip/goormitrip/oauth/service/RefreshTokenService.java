@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goormitrip.goormitrip.oauth.domain.RefreshToken;
 import com.goormitrip.goormitrip.oauth.repository.RefreshTokenRepository;
-import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,9 +18,9 @@ public class RefreshTokenService {
 	private final RefreshTokenRepository repo;
 
 	@Transactional
-	public void store(UserEntity user, String newToken) {
-		repo.deleteByUser(user);
-		repo.save(RefreshToken.of(newToken, user, TTL));
+	public void store(Long userId, String newToken) {
+		repo.deleteByUserId(userId);
+		repo.save(RefreshToken.of(newToken, userId, TTL));
 	}
 
 	@Transactional
