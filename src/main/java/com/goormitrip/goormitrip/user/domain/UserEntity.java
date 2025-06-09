@@ -44,6 +44,10 @@ public class UserEntity extends BaseTimeEntity {
 		user.role = role;
 		return user;
 	}
+
+	public boolean isSocialUser() {
+		return UserRole.SOCIAL_USER == role;
+	}
 }
 
 
