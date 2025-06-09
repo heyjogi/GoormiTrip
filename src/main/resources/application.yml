@@ -18,10 +18,6 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            authorization-grant-type: authorization_code
-            scope: account_email, profile_nickname, profile_image
-            client-name: Kakao
 
 app:
   jwt:
