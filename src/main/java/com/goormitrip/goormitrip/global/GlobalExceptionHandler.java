@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
 		return ApiResponse.error(msg, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(Exception.class)
+	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ApiResponse<Void>> handleUnknown(RuntimeException ex) {
 		log.error("Unhandled exception", ex);
 		return ApiResponse.error("알 수 없는 서버 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
