@@ -56,11 +56,10 @@ public class AuthService {
 		);
 
 		CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
-		UserEntity user = userDetails.getUser();
 
 		String jwt = jwtUtils.generateToken(userDetails);
 
-		return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
+		return new AuthResponse(jwt, userDetails.getEmail(), userDetails.getRole().name());
 	}
 
 }

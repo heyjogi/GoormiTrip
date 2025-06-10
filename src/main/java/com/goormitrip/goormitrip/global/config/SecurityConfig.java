@@ -17,19 +17,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.goormitrip.goormitrip.global.security.JwtAuthFilter;
+import com.goormitrip.goormitrip.oauth.security.JwtIssuerSuccessHandler;
+import com.goormitrip.goormitrip.oauth.service.CustomOAuth2UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final UserDetailsService userDetailsService;
-
 	private final JwtAuthFilter jwtAuthFilter;
 
-	public SecurityConfig(UserDetailsService userDetailsService, JwtAuthFilter jwtAuthFilter) {
-		this.userDetailsService = userDetailsService;
-		this.jwtAuthFilter = jwtAuthFilter;
-	}
+	private final CustomOAuth2UserService oAuth2UserSvc;
+	private final JwtIssuerSuccessHandler successHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -64,10 +66,14 @@ public class SecurityConfig {
 					new AntPathRequestMatcher("/error"),
 					new AntPathRequestMatcher("/api/products/**"),
 					new AntPathRequestMatcher("/verification/phone/**"),
-					new AntPathRequestMatcher("/kakao/webhook")
+					new AntPathRequestMatcher("/kakao/webhook"),
+					new AntPathRequestMatcher("/oauth2/**")
 				).permitAll().anyRequest().authenticated()
 			)
 			.authenticationProvider(authenticationProvider())
+			.oauth2Login(o -> o
+				.userInfoEndpoint(u -> u.userService(oAuth2UserSvc))
+				.successHandler(successHandler))
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

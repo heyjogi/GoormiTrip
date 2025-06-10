@@ -17,7 +17,8 @@ public enum UserError implements ErrorCode {
 	INVALID_EMAIL_FORMAT(HttpStatus.CONFLICT, "USER-005", "이메일 형식을 확인해주세요."),
 	INVALID_PHONE(HttpStatus.CONFLICT, "USER-006", "휴대폰 번호를 확인해주세요."),
 	PHONE_VERIFICATION_FAILED(HttpStatus.CONFLICT, "USER-007", "인증에 실패하였습니다."),
-	LOGIN_FAILED(HttpStatus.CONFLICT, "USER-008", "이메일 또는 비밀번호가 잘못되었습니다.");
+	LOGIN_FAILED(HttpStatus.CONFLICT, "USER-008", "이메일 또는 비밀번호가 잘못되었습니다."),
+	SOCIAL_LOGIN_USER_CANNOT_LOGIN(HttpStatus.CONFLICT, "USER-009", "소셜 로그인 사용자는 일반 로그인이 불가능합니다.");
 
 	private final HttpStatus status;
 	private final String code;
