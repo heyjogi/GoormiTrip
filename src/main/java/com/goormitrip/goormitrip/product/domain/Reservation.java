@@ -25,15 +25,17 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
     private LocalDate travelDate;
-
     private int peopleCount;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 }
