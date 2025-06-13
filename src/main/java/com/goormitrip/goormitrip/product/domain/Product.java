@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +20,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String title;
 
     @Column
@@ -37,7 +39,9 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    private String thumbnail;
+
     private LocalDateTime createdAt;
-    
+
     private LocalDateTime updatedAt;
 }

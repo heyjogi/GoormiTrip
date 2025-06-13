@@ -15,7 +15,7 @@ public interface ProductService {
 
     List<Product> getByTheme(String theme);
 
-    List<Product> filterProducts(ProductStatus status, String region, String theme, String keyword);
+    List<Product> filterProducts(ProductStatus status, String region, String theme, String keyword, String sort);
 
     Product getProductById(Long id);
 
