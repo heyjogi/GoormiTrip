@@ -5,15 +5,23 @@ import com.goormitrip.goormitrip.product.domain.Reservation;
 import com.goormitrip.goormitrip.product.domain.ReservationStatus;
 import com.goormitrip.goormitrip.product.dto.ReservationRequest;
 import com.goormitrip.goormitrip.product.dto.ReservationResponse;
+import com.goormitrip.goormitrip.product.dto.ReservationUpdateRequest;
+import com.goormitrip.goormitrip.product.dto.ReservationUpdateResponse;
 import com.goormitrip.goormitrip.product.exception.InvalidPeopleCountException;
+import com.goormitrip.goormitrip.product.exception.InvalidTravelDateException;
 import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
+import com.goormitrip.goormitrip.product.exception.ReservationAlreadyCancelledException;
+import com.goormitrip.goormitrip.product.exception.ReservationChangeDeadlineExpiredException;
+import com.goormitrip.goormitrip.product.exception.ReservationNotFoundException;
 import com.goormitrip.goormitrip.product.repository.ProductRepository;
 import com.goormitrip.goormitrip.product.repository.ReservationRepository;
 import com.goormitrip.goormitrip.product.service.ReservationService;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,7 +53,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationResponse createReservation (ReservationRequest request, Long userId) {
         Product product = productRepository.findById(request.getProductId())
-            .orElseThrow(() -> new ProductNotFoundException(request.getProductId()));
+            .orElseThrow(() -> new ProductNotFoundException());
         if (request.getPeopleCount() < product.getMinPeople() || request.getPeopleCount() > product.getMaxPeople()) {
             throw new InvalidPeopleCountException(product.getMinPeople(), product.getMaxPeople());
         }
@@ -72,8 +80,57 @@ public class ReservationServiceImpl implements ReservationService {
                 .peopleCount(saved.getPeopleCount())
                 .build())
             .build();
+    }
 
+    @Override
+    @Transactional
+    public ReservationUpdateResponse updateReservation(String reservationId, ReservationUpdateRequest request,
+        Long userId) {
+        Long id = Long.parseLong(reservationId.replace("A", ""));
 
+        Reservation reservation = reservationRepository.findById(id)
+            .orElseThrow(() -> new ReservationNotFoundException());
 
+        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+            throw new ReservationAlreadyCancelledException();
+        }
+
+        Product product = reservation.getProduct();
+
+        if (request.getPeopleCount() < product.getMinPeople() || request.getPeopleCount() > product.getMaxPeople()) {
+            throw new InvalidPeopleCountException(product.getMinPeople(), product.getMaxPeople());
+        }
+
+        LocalDate travelDate = request.getTravelDate();
+        if (travelDate.isBefore(LocalDate.now().plusDays(2))) {
+            throw new ReservationChangeDeadlineExpiredException();
+        }
+
+        boolean dateReserved = reservationRepository.findByProductIdAndTravelDate(product.getId(), travelDate)
+            .stream()
+            .anyMatch(r -> r.getStatus() == ReservationStatus.RESERVED && !r.getId().equals(reservation.getId()));
+
+        if (dateReserved) {
+            throw new InvalidTravelDateException();
+        }
+
+        reservation.setTravelDate(travelDate);
+        reservation.setPeopleCount(request.getPeopleCount());
+
+        return ReservationUpdateResponse.builder()
+            .success(true)
+            .response(ReservationUpdateResponse.ResponseInfo.builder()
+                .status("reserved")
+                .message("예약 내역이 성공적으로 변경되었습니다.")
+                .build())
+            .data(ReservationUpdateResponse.Data.builder()
+                .reservationId("A" + reservation.getId())
+                .userId(userId)
+                .productId(product.getId())
+                .updatedAt(reservation.getUpdatedAt())
+                .travelDate(travelDate)
+                .peopleCount(request.getPeopleCount())
+                .build())
+            .build();
     }
 }

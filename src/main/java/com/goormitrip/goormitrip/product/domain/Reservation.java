@@ -35,10 +35,4 @@ public class Reservation extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }

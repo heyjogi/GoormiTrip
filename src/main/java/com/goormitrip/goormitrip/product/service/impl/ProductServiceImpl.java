@@ -120,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public void deleteProduct(Long id) {
 		Product product = productRepository.findById(id)
-			.orElseThrow(() -> new ProductNotFoundException(id));
+			.orElseThrow(() -> new ProductNotFoundException());
 		productRepository.delete(product);
 	}
 

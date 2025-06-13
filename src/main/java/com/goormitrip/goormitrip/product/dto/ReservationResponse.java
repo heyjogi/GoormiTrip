@@ -3,12 +3,14 @@ package com.goormitrip.goormitrip.product.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
+
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class ReservationResponse {
+public class ReservationResponse extends BaseTimeEntity {
 	private boolean success;
 	private ResponseInfo response;
 	private Data data;

@@ -3,6 +3,8 @@ package com.goormitrip.goormitrip.product.controller;
 import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.product.dto.ReservationRequest;
 import com.goormitrip.goormitrip.product.dto.ReservationResponse;
+import com.goormitrip.goormitrip.product.dto.ReservationUpdateRequest;
+import com.goormitrip.goormitrip.product.dto.ReservationUpdateResponse;
 import com.goormitrip.goormitrip.product.service.ReservationService;
 
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,17 @@ public class ReservationController {
     ) {
         Long userId = userDetails.getId();
         ReservationResponse response = reservationService.createReservation(request, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<ReservationUpdateResponse> updateReservation(
+        @PathVariable String reservationId,
+        @RequestBody ReservationUpdateRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getId();
+        ReservationUpdateResponse response = reservationService.updateReservation(reservationId, request, userId);
         return ResponseEntity.ok(response);
     }
 
