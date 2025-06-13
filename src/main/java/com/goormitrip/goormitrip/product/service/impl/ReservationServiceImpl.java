@@ -3,6 +3,7 @@ package com.goormitrip.goormitrip.product.service.impl;
 import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.product.domain.Reservation;
 import com.goormitrip.goormitrip.product.domain.ReservationStatus;
+import com.goormitrip.goormitrip.product.dto.ReservationCancelResponse;
 import com.goormitrip.goormitrip.product.dto.ReservationRequest;
 import com.goormitrip.goormitrip.product.dto.ReservationResponse;
 import com.goormitrip.goormitrip.product.dto.ReservationUpdateRequest;
@@ -11,6 +12,7 @@ import com.goormitrip.goormitrip.product.exception.InvalidPeopleCountException;
 import com.goormitrip.goormitrip.product.exception.InvalidTravelDateException;
 import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
 import com.goormitrip.goormitrip.product.exception.ReservationAlreadyCancelledException;
+import com.goormitrip.goormitrip.product.exception.ReservationCancelDeadlineExpiredException;
 import com.goormitrip.goormitrip.product.exception.ReservationChangeDeadlineExpiredException;
 import com.goormitrip.goormitrip.product.exception.ReservationNotFoundException;
 import com.goormitrip.goormitrip.product.repository.ProductRepository;
@@ -130,6 +132,38 @@ public class ReservationServiceImpl implements ReservationService {
                 .updatedAt(reservation.getUpdatedAt())
                 .travelDate(travelDate)
                 .peopleCount(request.getPeopleCount())
+                .build())
+            .build();
+    }
+
+    @Override
+    @Transactional
+    public ReservationCancelResponse cancelReservation(String reservationId, Long userId) {
+        Long id = Long.parseLong(reservationId.replace("A", ""));
+
+        Reservation reservation = reservationRepository.findById(id)
+            .orElseThrow(() -> new ReservationNotFoundException());
+
+        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+            throw new ReservationAlreadyCancelledException();
+        }
+
+        LocalDate today = LocalDate.now();
+        if (reservation.getTravelDate().isBefore(today.plusDays(3))) {
+            throw new ReservationCancelDeadlineExpiredException();
+        }
+
+        reservation.setStatus(ReservationStatus.CANCELLED);
+
+        return ReservationCancelResponse.builder()
+            .success(true)
+            .response(ReservationCancelResponse.ResponseInfo.builder()
+                .status("cancelled")
+                .message("예약 취소가 완료되었습니다.")
+                .build())
+            .data(ReservationCancelResponse.Data.builder()
+                .reservationId("A" + reservation.getId())
+                .updatedAt(reservation.getUpdatedAt())
                 .build())
             .build();
     }

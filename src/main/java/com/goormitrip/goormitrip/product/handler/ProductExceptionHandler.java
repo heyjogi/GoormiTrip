@@ -11,6 +11,7 @@ import com.goormitrip.goormitrip.product.exception.InvalidPeopleCountException;
 import com.goormitrip.goormitrip.product.exception.InvalidTravelDateException;
 import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
 import com.goormitrip.goormitrip.product.exception.ReservationAlreadyCancelledException;
+import com.goormitrip.goormitrip.product.exception.ReservationCancelDeadlineExpiredException;
 import com.goormitrip.goormitrip.product.exception.ReservationChangeDeadlineExpiredException;
 import com.goormitrip.goormitrip.product.exception.ReservationNotFoundException;
 
@@ -53,6 +54,12 @@ public class ProductExceptionHandler {
 	@ExceptionHandler(ReservationNotFoundException.class)
 	public ResponseEntity<?> handleReservationNotFound(ReservationNotFoundException ex) {
 		log.warn("Reservation not found. detail={}", ex.getDetail());
+		return ApiResponse.error(ex);
+	}
+
+	@ExceptionHandler(ReservationCancelDeadlineExpiredException.class)
+	public ResponseEntity<?> handleReservationCancelDeadlineExpired(ReservationCancelDeadlineExpiredException ex) {
+		log.warn("Reservation cancel deadline expired. detail={}", ex.getDetail());
 		return ApiResponse.error(ex);
 	}
 }
