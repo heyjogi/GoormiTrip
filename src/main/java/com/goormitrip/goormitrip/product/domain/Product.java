@@ -37,6 +37,9 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    private int minPeople;
+    private int maxPeople;
+
     private LocalDateTime createdAt;
     
     private LocalDateTime updatedAt;
