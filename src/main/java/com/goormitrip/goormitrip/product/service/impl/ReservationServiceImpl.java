@@ -2,6 +2,8 @@ package com.goormitrip.goormitrip.product.service.impl;
 
 import com.goormitrip.goormitrip.product.domain.Reservation;
 import com.goormitrip.goormitrip.product.domain.ReservationStatus;
+import com.goormitrip.goormitrip.product.dto.ReservationRequest;
+import com.goormitrip.goormitrip.product.dto.ReservationResponse;
 import com.goormitrip.goormitrip.product.repository.ReservationRepository;
 import com.goormitrip.goormitrip.product.service.ReservationService;
 
@@ -32,5 +34,12 @@ public class ReservationServiceImpl implements ReservationService {
         return today.datesUntil(today.plusDays(30))
             .filter(date -> !reservedDates.contains(date))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public ReservationResponse createReservation (ReservationRequest request, Long userId) {
+        if (request.getPeopleCount() <= 0) {
+            throw new
+        }
     }
 }
