@@ -66,9 +66,10 @@ public class ProductController {
 		@RequestParam(required = false) ProductStatus status,
 		@RequestParam(required = false) String region,
 		@RequestParam(required = false) String theme,
-		@RequestParam(required = false) String keyword
+		@RequestParam(required = false) String keyword,
+		@RequestParam(required = false) String sort
 	) {
-		return productService.filterProducts(status, region, theme, keyword);
+		return productService.filterProducts(status, region, theme, keyword, sort);
 	}
 
 	@PutMapping("/{id}")
