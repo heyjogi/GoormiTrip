@@ -14,8 +14,8 @@ import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.product.domain.ProductStatus;
 import com.goormitrip.goormitrip.product.repository.ProductRepository;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableJpaAuditing
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class GoormitripApplication {
 
 	public static void main(String[] args) {
