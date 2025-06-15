@@ -10,7 +10,7 @@ import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateRequest;
 import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateResponse;
 import com.goormitrip.goormitrip.reservation.exception.InvalidPeopleCountException;
 import com.goormitrip.goormitrip.reservation.exception.InvalidTravelDateException;
-import com.goormitrip.goormitrip.reservation.exception.ProductNotFoundException;
+import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
 import com.goormitrip.goormitrip.reservation.exception.ReservationAlreadyCancelledException;
 import com.goormitrip.goormitrip.reservation.exception.ReservationCancelDeadlineExpiredException;
 import com.goormitrip.goormitrip.reservation.exception.ReservationChangeDeadlineExpiredException;
