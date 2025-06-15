@@ -41,6 +41,9 @@ public class Product {
 
     private String thumbnail;
 
+    private int minPeople;
+    private int maxPeople;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
