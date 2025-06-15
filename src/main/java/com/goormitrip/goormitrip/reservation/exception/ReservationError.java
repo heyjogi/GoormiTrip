@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ReservationError implements ErrorCode {
-  PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "R-001", "Product not found"),
-INVALID_TRAVEL_DATE(HttpStatus.BAD_REQUEST, "R-002", "선택한 날짜는 예약 가능한 날짜가 아닙니다."),
+	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "R-001", "Product not found"),
+	INVALID_TRAVEL_DATE(HttpStatus.BAD_REQUEST, "R-002", "선택한 날짜는 예약 가능한 날짜가 아닙니다."),
 	INVALID_PEOPLE_COUNT(HttpStatus.BAD_REQUEST, "R-003", "이 상품은 %d ~ %d명 까지 예약 가능합니다."),
 	RESERVATION_NOT_FOUND(HttpStatus.NOT_FOUND, "R-004", "존재하지 않는 예약 정보입니다."),
 	RESERVATION_ALREADY_CANCELLED(HttpStatus.BAD_REQUEST, "R-005", "이미 취소된 예약은 변경할 수 없습니다."),
