@@ -11,20 +11,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ReservationResponse extends BaseTimeEntity {
-	private boolean success;
-	private ResponseInfo response;
-	private Data data;
-
-	@Getter
-	@Builder
-	public static class ResponseInfo {
-		private String status;
-		private String message;
-	}
-
-	@Getter
-	@Builder
-	public static class Data {
 		private String reservationId;
 		private Long userId;
 		private Long productId;
@@ -32,4 +18,3 @@ public class ReservationResponse extends BaseTimeEntity {
 		private LocalDate travelDate;
 		private int peopleCount;
 	}
-}

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goormitrip.goormitrip.global.security.CustomUserDetails;
+import com.goormitrip.goormitrip.global.util.response.ApiResponse;
 import com.goormitrip.goormitrip.reservation.dto.ReservationCancelResponse;
 import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateRequest;
 import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateResponse;
@@ -26,24 +27,23 @@ public class MyPageReservationController {
     }
 
     @PutMapping("/{reservationId}")
-    public ResponseEntity<ReservationUpdateResponse> updateReservation(
+    public ResponseEntity<ApiResponse<ReservationUpdateResponse>> updateReservation(
         @PathVariable String reservationId,
         @RequestBody ReservationUpdateRequest request,
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getId();
         ReservationUpdateResponse response = reservationService.updateReservation(reservationId, request, userId);
-        return ResponseEntity.ok(response);
+        return ApiResponse.ok(response);
     }
 
     @PutMapping("/{reservationId}/cancel")
-    public ResponseEntity<ReservationCancelResponse> cancelReservation(
+    public ResponseEntity<ApiResponse<ReservationCancelResponse>> cancelReservation(
         @PathVariable String reservationId,
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getId();
         ReservationCancelResponse response = reservationService.cancelReservation(reservationId, userId);
-        return ResponseEntity.ok(response);
+        return ApiResponse.ok(response);
     }
-
 }

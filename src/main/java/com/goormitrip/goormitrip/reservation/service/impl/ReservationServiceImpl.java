@@ -68,18 +68,12 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation saved = reservationRepository.save(reservation);
 
         return ReservationResponse.builder()
-            .success(true)
-            .response(ReservationResponse.ResponseInfo.builder()
-                .status("reserved")
-                .message("예약이 완료되었습니다.")
-                .build())
-            .data(ReservationResponse.Data.builder()
-                .reservationId("A" + saved.getId())
-                .productId(product.getId())
-                .createdAt(saved.getCreatedAt())
-                .travelDate(saved.getTravelDate())
-                .peopleCount(saved.getPeopleCount())
-                .build())
+            .reservationId("A" + saved.getId())
+            .userId(userId)
+            .productId(product.getId())
+            .createdAt(saved.getCreatedAt())
+            .travelDate(saved.getTravelDate())
+            .peopleCount(saved.getPeopleCount())
             .build();
     }
 
@@ -119,19 +113,12 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setPeopleCount(request.getPeopleCount());
 
         return ReservationUpdateResponse.builder()
-            .success(true)
-            .response(ReservationUpdateResponse.ResponseInfo.builder()
-                .status("reserved")
-                .message("예약 내역이 성공적으로 변경되었습니다.")
-                .build())
-            .data(ReservationUpdateResponse.Data.builder()
-                .reservationId("A" + reservation.getId())
-                .userId(userId)
-                .productId(product.getId())
-                .updatedAt(reservation.getUpdatedAt())
-                .travelDate(travelDate)
-                .peopleCount(request.getPeopleCount())
-                .build())
+            .reservationId("A" + reservation.getId())
+            .userId(userId)
+            .productId(product.getId())
+            .updatedAt(reservation.getUpdatedAt())
+            .travelDate(travelDate)
+            .peopleCount(request.getPeopleCount())
             .build();
     }
 
@@ -155,15 +142,9 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setStatus(ReservationStatus.CANCELLED);
 
         return ReservationCancelResponse.builder()
-            .success(true)
-            .response(ReservationCancelResponse.ResponseInfo.builder()
-                .status("cancelled")
-                .message("예약 취소가 완료되었습니다.")
-                .build())
-            .data(ReservationCancelResponse.Data.builder()
-                .reservationId("A" + reservation.getId())
-                .updatedAt(reservation.getUpdatedAt())
-                .build())
+            .reservationId("A" + reservation.getId())
+            .updatedAt(reservation.getUpdatedAt())
             .build();
+
     }
 }
