@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.product.dto;
+package com.goormitrip.goormitrip.reservation.dto;
 
 import java.time.LocalDate;
 import lombok.Getter;

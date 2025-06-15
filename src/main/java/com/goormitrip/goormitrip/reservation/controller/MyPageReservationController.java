@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.product.controller;
+package com.goormitrip.goormitrip.reservation.controller;
 
 
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goormitrip.goormitrip.global.security.CustomUserDetails;
-import com.goormitrip.goormitrip.product.dto.ReservationCancelResponse;
-import com.goormitrip.goormitrip.product.dto.ReservationUpdateRequest;
-import com.goormitrip.goormitrip.product.dto.ReservationUpdateResponse;
-import com.goormitrip.goormitrip.product.service.ReservationService;
+import com.goormitrip.goormitrip.reservation.dto.ReservationCancelResponse;
+import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateRequest;
+import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateResponse;
+import com.goormitrip.goormitrip.reservation.service.ReservationService;
 
 @RestController
 @RequestMapping("/mypage/reservations")

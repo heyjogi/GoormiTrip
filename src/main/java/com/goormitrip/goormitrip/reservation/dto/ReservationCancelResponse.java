@@ -1,6 +1,5 @@
-package com.goormitrip.goormitrip.product.dto;
+package com.goormitrip.goormitrip.reservation.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.goormitrip.goormitrip.global.util.BaseTimeEntity;

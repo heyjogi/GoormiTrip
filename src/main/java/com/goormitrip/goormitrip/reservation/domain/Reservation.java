@@ -1,10 +1,10 @@
-package com.goormitrip.goormitrip.product.domain;
+package com.goormitrip.goormitrip.reservation.domain;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
+import com.goormitrip.goormitrip.product.domain.Product;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

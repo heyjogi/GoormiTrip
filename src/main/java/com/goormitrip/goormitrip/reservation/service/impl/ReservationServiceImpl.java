@@ -1,29 +1,28 @@
-package com.goormitrip.goormitrip.product.service.impl;
+package com.goormitrip.goormitrip.reservation.service.impl;
 
 import com.goormitrip.goormitrip.product.domain.Product;
-import com.goormitrip.goormitrip.product.domain.Reservation;
-import com.goormitrip.goormitrip.product.domain.ReservationStatus;
-import com.goormitrip.goormitrip.product.dto.ReservationCancelResponse;
-import com.goormitrip.goormitrip.product.dto.ReservationRequest;
-import com.goormitrip.goormitrip.product.dto.ReservationResponse;
-import com.goormitrip.goormitrip.product.dto.ReservationUpdateRequest;
-import com.goormitrip.goormitrip.product.dto.ReservationUpdateResponse;
-import com.goormitrip.goormitrip.product.exception.InvalidPeopleCountException;
-import com.goormitrip.goormitrip.product.exception.InvalidTravelDateException;
-import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
-import com.goormitrip.goormitrip.product.exception.ReservationAlreadyCancelledException;
-import com.goormitrip.goormitrip.product.exception.ReservationCancelDeadlineExpiredException;
-import com.goormitrip.goormitrip.product.exception.ReservationChangeDeadlineExpiredException;
-import com.goormitrip.goormitrip.product.exception.ReservationNotFoundException;
+import com.goormitrip.goormitrip.reservation.domain.Reservation;
+import com.goormitrip.goormitrip.reservation.domain.ReservationStatus;
+import com.goormitrip.goormitrip.reservation.dto.ReservationCancelResponse;
+import com.goormitrip.goormitrip.reservation.dto.ReservationRequest;
+import com.goormitrip.goormitrip.reservation.dto.ReservationResponse;
+import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateRequest;
+import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateResponse;
+import com.goormitrip.goormitrip.reservation.exception.InvalidPeopleCountException;
+import com.goormitrip.goormitrip.reservation.exception.InvalidTravelDateException;
+import com.goormitrip.goormitrip.reservation.exception.ProductNotFoundException;
+import com.goormitrip.goormitrip.reservation.exception.ReservationAlreadyCancelledException;
+import com.goormitrip.goormitrip.reservation.exception.ReservationCancelDeadlineExpiredException;
+import com.goormitrip.goormitrip.reservation.exception.ReservationChangeDeadlineExpiredException;
+import com.goormitrip.goormitrip.reservation.exception.ReservationNotFoundException;
 import com.goormitrip.goormitrip.product.repository.ProductRepository;
-import com.goormitrip.goormitrip.product.repository.ReservationRepository;
-import com.goormitrip.goormitrip.product.service.ReservationService;
+import com.goormitrip.goormitrip.reservation.repository.ReservationRepository;
+import com.goormitrip.goormitrip.reservation.service.ReservationService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
