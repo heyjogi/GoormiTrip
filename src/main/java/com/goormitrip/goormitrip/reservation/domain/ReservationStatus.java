@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.product.domain;
+package com.goormitrip.goormitrip.reservation.domain;
 
 public enum ReservationStatus {
     RESERVED,

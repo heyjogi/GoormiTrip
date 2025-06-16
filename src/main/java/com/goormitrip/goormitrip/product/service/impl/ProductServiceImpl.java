@@ -117,14 +117,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product getProductById(Long id) {
 		return productRepository.findById(id)
-			.orElseThrow(() -> new ProductNotFoundException(id));
+			.orElseThrow(() -> new ProductNotFoundException());
 	}
 
 	@Override
 	@Transactional
 	public Product updateProduct(Long id, Product updatedProduct) {
 		Product product = productRepository.findById(id)
-			.orElseThrow(() -> new ProductNotFoundException(id));
+			.orElseThrow(() -> new ProductNotFoundException());
 
 		product.setTitle(updatedProduct.getTitle());
 		product.setDescription(updatedProduct.getDescription());
@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public void deleteProduct(Long id) {
 		Product product = productRepository.findById(id)
-			.orElseThrow(() -> new ProductNotFoundException(id));
+			.orElseThrow(() -> new ProductNotFoundException());
 		productRepository.delete(product);
 	}
 
