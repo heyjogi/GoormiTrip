@@ -1,9 +1,6 @@
 package com.goormitrip.goormitrip.payment.domain;
 
 import java.time.LocalDateTime;
-
-import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,7 +19,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TossPayment extends BaseTimeEntity {
+public class TossPayment {
 	@Id
 	private byte[] paymentId;
 

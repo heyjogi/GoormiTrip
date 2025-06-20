@@ -10,8 +10,6 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ConfirmPaymentResponse {
-	private boolean success;
-	private String message;
 	private String paymentId;
 	private String status;
 	private LocalDateTime approvedAt;
