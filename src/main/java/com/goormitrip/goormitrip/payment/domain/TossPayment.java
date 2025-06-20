@@ -46,4 +46,3 @@ public class TossPayment extends BaseTimeEntity {
 	private LocalDateTime requestedAt;
 	private LocalDateTime approvedAt;
 }
-}
