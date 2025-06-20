@@ -43,7 +43,7 @@ public class MyPageReservationController {
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getId();
-        ReservationCancelResponse response = reservationService.cancelReservation(reservationId, userId);
+        ReservationCancelResponse response = reservationService.cancelReservation(reservationId);
         return ApiResponse.ok(response);
     }
 }

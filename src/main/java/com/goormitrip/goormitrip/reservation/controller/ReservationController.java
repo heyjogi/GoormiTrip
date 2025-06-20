@@ -37,7 +37,7 @@ public class ReservationController {
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getId();
-        ReservationResponse response = reservationService.createReservation(request, userId);
+        ReservationResponse response = reservationService.createReservation(request);
         return ApiResponse.ok(response);
     }
 
