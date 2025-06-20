@@ -42,4 +42,9 @@ public class TossPayment {
 	@Column(nullable = false)
 	private LocalDateTime requestedAt;
 	private LocalDateTime approvedAt;
+
+	@Column(name = "reservation_id")
+	private Long reservationId;
+
+	private LocalDateTime refundedAt;
 }

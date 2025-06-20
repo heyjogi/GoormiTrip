@@ -15,11 +15,17 @@ import com.goormitrip.goormitrip.payment.domain.TossPaymentMethod;
 import com.goormitrip.goormitrip.payment.domain.TossPaymentStatus;
 import com.goormitrip.goormitrip.payment.dto.ConfirmPaymentRequest;
 import com.goormitrip.goormitrip.payment.dto.ConfirmPaymentResponse;
+import com.goormitrip.goormitrip.payment.dto.PaymentCancelRequest;
+import com.goormitrip.goormitrip.payment.dto.PaymentCancelResponse;
 import com.goormitrip.goormitrip.payment.exception.InvalidAmountException;
+import com.goormitrip.goormitrip.payment.exception.PaymentAlreadyCancelledException;
+import com.goormitrip.goormitrip.payment.exception.PaymentCancelFailedException;
 import com.goormitrip.goormitrip.payment.exception.PaymentFailedException;
+import com.goormitrip.goormitrip.payment.exception.PaymentNotFoundException;
 import com.goormitrip.goormitrip.payment.exception.UnsupportedMethodException;
 import com.goormitrip.goormitrip.payment.repository.TossPaymentRepository;
 import com.goormitrip.goormitrip.payment.service.PaymentService;
+import com.goormitrip.goormitrip.reservation.service.ReservationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 	private final TossPaymentRepository repository;
 	private final WebClient tossWebClient;
+	private final ReservationService reservationService;
 
 	@Override
 	@Transactional
@@ -90,5 +97,40 @@ public class PaymentServiceImpl implements PaymentService {
 			.status("paid")
 			.approvedAt(saved.getApprovedAt())
 			.build();
+	}
+
+	@Override
+	@Transactional
+	public PaymentCancelResponse cancelPayment(PaymentCancelRequest request) {
+		try {
+			Long reservationId = Long.parseLong(request.getReservationId().replace("A", ""));
+
+			TossPayment payment = repository.findByReservationId(reservationId)
+				.orElseThrow(() -> new PaymentNotFoundException());
+
+			if (payment.getTossPaymentStatus() == TossPaymentStatus.REFUNDED ||
+				payment.getTossPaymentStatus() == TossPaymentStatus.CANCELED) {
+				throw new PaymentAlreadyCancelledException();
+			}
+
+			reservationService.cancelReservation(request.getReservationId());
+
+			payment.setTossPaymentStatus(TossPaymentStatus.REFUNDED);
+			payment.setRefundedAt(LocalDateTime.now());
+
+			TossPayment savedPayment = repository.save(payment);
+
+			return PaymentCancelResponse.builder()
+				.paymentId(new String(savedPayment.getPaymentId()))
+				.reservationId(request.getReservationId())
+				.amount(savedPayment.getTotalAmount())
+				.refundedAt(savedPayment.getRefundedAt())
+				.build();
+
+		} catch (PaymentNotFoundException | PaymentAlreadyCancelledException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new PaymentCancelFailedException();
+		}
 	}
 }

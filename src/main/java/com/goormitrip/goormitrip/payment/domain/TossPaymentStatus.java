@@ -4,5 +4,6 @@ public enum TossPaymentStatus {
 	READY,
 	PAID,
 	CANCELED,
-	FAILED
+	FAILED,
+	REFUNDED
 }

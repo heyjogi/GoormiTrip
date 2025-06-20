@@ -52,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationResponse createReservation (ReservationRequest request, Long userId) {
+    public ReservationResponse createReservation(ReservationRequest request) {
         Product product = productRepository.findById(request.getProductId())
             .orElseThrow(() -> new ProductNotFoundException());
         if (request.getPeopleCount() < product.getMinPeople() || request.getPeopleCount() > product.getMaxPeople()) {
@@ -69,7 +69,6 @@ public class ReservationServiceImpl implements ReservationService {
 
         return ReservationResponse.builder()
             .reservationId("A" + saved.getId())
-            .userId(userId)
             .productId(product.getId())
             .createdAt(saved.getCreatedAt())
             .travelDate(saved.getTravelDate())
@@ -124,7 +123,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public ReservationCancelResponse cancelReservation(String reservationId, Long userId) {
+    public ReservationCancelResponse cancelReservation(String reservationId) {
         Long id = Long.parseLong(reservationId.replace("A", ""));
 
         Reservation reservation = reservationRepository.findById(id)
