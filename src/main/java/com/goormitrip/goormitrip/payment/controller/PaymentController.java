@@ -3,6 +3,7 @@ package com.goormitrip.goormitrip.payment.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,7 @@ public class PaymentController {
 		return ApiResponse.ok(paymentService.confirmPayment(request));
 	}
 
-	@PostMapping("/{paymentID}/cancel")
+	@PutMapping("/{paymentID}/cancel")
 	public ResponseEntity<ApiResponse<PaymentCancelResponse>> confirm(
 		@PathVariable String paymentId,
 		@RequestBody PaymentCancelRequest request) {
