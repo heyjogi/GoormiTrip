@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
     @EntityGraph(attributePaths = "profile")
-    Optional<UserEntity> findById(Long id);
+    Optional<UserEntity> findFetchProfileById(Long id);
 }

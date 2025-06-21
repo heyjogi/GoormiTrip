@@ -20,7 +20,7 @@ public class DefaultUserQueryService implements UserQueryService {
 
 	@Override
 	public UserProfileResponse getCurrentUserProfile(final Long userId) {
-		return userRepository.findById(userId)
+		return userRepository.findFetchProfileById(userId)
 			.map(UserProfileResponse::from)
 			.orElseThrow(UserNotFoundException::new);
 	}
