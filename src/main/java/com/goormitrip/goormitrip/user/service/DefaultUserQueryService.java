@@ -1,6 +1,5 @@
 package com.goormitrip.goormitrip.user.service;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +8,9 @@ import com.goormitrip.goormitrip.user.exception.UserNotFoundException;
 import com.goormitrip.goormitrip.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -18,10 +19,9 @@ public class DefaultUserQueryService implements UserQueryService {
 	private final UserRepository userRepository;
 
 	@Override
-	public UserProfileResponse getCurrentUserProfile() {
-		final Long userId = (Long) SecurityContextHolder.getContext()
-			.getAuthentication()
-			.getPrincipal();
+	public UserProfileResponse getCurrentUserProfile(final Long userId) {
+		// log.info("Fetching profile for user with ID: {}",
+		// 	SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
 		return userRepository.findById(userId)
 			.map(UserProfileResponse::from)

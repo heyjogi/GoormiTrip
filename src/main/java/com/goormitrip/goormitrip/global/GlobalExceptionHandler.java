@@ -4,6 +4,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
 			.orElse("잘못된 입력입니다.");
 		log.warn("Validation error: {}", msg);
 		return ApiResponse.error(msg, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ResponseEntity<ApiResponse<Void>> handleAuthorizationDenied(AuthorizationDeniedException ex) {
+		log.warn("Authorization denied: {}", ex.getMessage());
+		return ApiResponse.error("권한이 없습니다.", HttpStatus.FORBIDDEN);
 	}
 
 	@ExceptionHandler(RuntimeException.class)
