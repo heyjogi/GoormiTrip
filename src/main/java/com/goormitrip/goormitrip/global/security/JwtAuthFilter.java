@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-	private final JwtUtils jwtUtils;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	private final UserDetailsService userDetailsService;
 
@@ -41,12 +41,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		log.debug("[JWT] {} → Bearer {}", request.getRequestURI(), token);
 
 		try {
-			String userEmail = jwtUtils.extractUsername(token);
+			String userEmail = jwtTokenProvider.extractUsername(token);
 
 			if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername((userEmail));
 
-				if (!jwtUtils.isTokenValid(token, userDetails)) {
+				if (!jwtTokenProvider.isTokenValid(token, userDetails)) {
 					throw new JwtAuthenticationException("Invalid JWT");
 				}
 
