@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.global.security.JwtUtils;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
-import com.goormitrip.goormitrip.user.domain.UserRole;
 import com.goormitrip.goormitrip.user.dto.AuthRequest;
 import com.goormitrip.goormitrip.user.dto.AuthResponse;
 import com.goormitrip.goormitrip.user.dto.SignupRequest;
@@ -31,23 +30,20 @@ public class AuthService {
 	private final JwtUtils jwtUtils;
 
 	@Transactional
-	public AuthResponse signup(SignupRequest request) {
-		if (userRepository.existsByEmail(request.getEmail())) {
-			throw new EmailDuplicateException();
-		}
+	public AuthResponse signup(SignupRequest req) {
+		ensureEmailNotDuplicated(req.getEmail());
 
-		UserEntity user = new UserEntity();
-		user.setEmail(request.getEmail());
-		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		user.setPhone(request.getPhone());
-		user.setRole(UserRole.USER);
-
+		UserEntity user = UserEntity.createLocal(req, passwordEncoder);
 		userRepository.save(user);
 
-		CustomUserDetails userDetails = new CustomUserDetails(user);
-		String jwt = jwtUtils.generateToken(userDetails);
-
+		String jwt = jwtUtils.generateToken(new CustomUserDetails(user));
 		return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
+	}
+
+	private void ensureEmailNotDuplicated(String email) {
+		if (userRepository.existsByEmail(email)) {
+			throw new EmailDuplicateException();
+		}
 	}
 
 	public AuthResponse login(AuthRequest request) {
@@ -61,5 +57,4 @@ public class AuthService {
 
 		return new AuthResponse(jwt, userDetails.getEmail(), userDetails.getRole().name());
 	}
-
 }
