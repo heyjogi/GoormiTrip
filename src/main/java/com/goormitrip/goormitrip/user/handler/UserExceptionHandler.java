@@ -18,6 +18,7 @@ import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException
 import com.goormitrip.goormitrip.user.exception.RequiredTermsUncheckedException;
 import com.goormitrip.goormitrip.user.exception.SocialLoginUserCannotLoginException;
 import com.goormitrip.goormitrip.user.exception.UserError;
+import com.goormitrip.goormitrip.user.exception.UserNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,5 +85,11 @@ public class UserExceptionHandler {
 	public ResponseEntity<?> handleBadCredentials(final BadCredentialsException ex) {
 		log.warn("Bad credentials: {}", ex.getMessage());
 		return ApiResponse.error(UserError.LOGIN_FAILED);
+	}
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<?> handleUserNotFound(final UserNotFoundException ex) {
+		log.warn("User not found: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
 	}
 }
