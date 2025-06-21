@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.goormitrip.goormitrip.global.security.CustomAccessDeniedHandler;
+import com.goormitrip.goormitrip.global.security.JwtAuthEntryPoint;
 import com.goormitrip.goormitrip.global.security.JwtAuthFilter;
 import com.goormitrip.goormitrip.oauth.security.JwtIssuerSuccessHandler;
 import com.goormitrip.goormitrip.oauth.service.CustomOAuth2UserService;
@@ -32,6 +34,9 @@ public class SecurityConfig {
 
 	private final CustomOAuth2UserService oAuth2UserSvc;
 	private final JwtIssuerSuccessHandler successHandler;
+
+	private final JwtAuthEntryPoint authEntryPoint;
+	private final CustomAccessDeniedHandler deniedHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -68,6 +73,10 @@ public class SecurityConfig {
 			)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
+			.exceptionHandling(ex -> ex
+				.authenticationEntryPoint(authEntryPoint)
+				.accessDeniedHandler(deniedHandler)
+			)
 			.authenticationProvider(authenticationProvider())
 			.oauth2Login(o -> o
 				.userInfoEndpoint(u -> u.userService(oAuth2UserSvc))
