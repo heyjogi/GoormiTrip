@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PaymentServiceImpl implements PaymentService {
 
 	private final TossPaymentRepository repository;
@@ -38,15 +39,16 @@ public class PaymentServiceImpl implements PaymentService {
 	private final ReservationService reservationService;
 
 	@Override
-	@Transactional
 	public ConfirmPaymentResponse confirmPayment(ConfirmPaymentRequest req) {
 		String auth = "Basic " + Base64.getEncoder()
 			.encodeToString(("test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:").getBytes());
 
+		String orderId = req.reservationId();
+
 		Map<String, Object> body = Map.of(
-			"paymentKey", req.getPaymentKey(),
-			"orderId", req.getOrderId(),
-			"amount", req.getAmount()
+			"paymentKey", req.paymentKey(),
+			"orderId", orderId,
+			"amount", req.amount()
 		);
 
 		Map<String, Object> tossRes;
@@ -68,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 
 		long paidAmount = ((Number) tossRes.get("amount")).longValue();
-		if (paidAmount != req.getAmount()) {
+		if (paidAmount != req.amount()) {
 			throw new InvalidAmountException();
 		}
 
@@ -82,8 +84,8 @@ public class PaymentServiceImpl implements PaymentService {
 		TossPayment saved = repository.save(
 			TossPayment.builder()
 				.paymentId(UUID.randomUUID().toString().getBytes())
-				.tossOrderId(req.getOrderId())
-				.tossPaymentKey(req.getPaymentKey())
+				.tossOrderId(orderId)
+				.tossPaymentKey(req.paymentKey())
 				.totalAmount(paidAmount)
 				.tossPaymentMethod(method)
 				.tossPaymentStatus(TossPaymentStatus.PAID)
@@ -92,45 +94,60 @@ public class PaymentServiceImpl implements PaymentService {
 				.build()
 		);
 
-		return ConfirmPaymentResponse.builder()
-			.paymentId(req.getPaymentKey())
-			.status("paid")
-			.approvedAt(saved.getApprovedAt())
-			.build();
+		return new ConfirmPaymentResponse(
+			orderId,
+			"paid",
+			method.name(),
+			req.amount(),
+			saved.getApprovedAt()
+		);
 	}
 
 	@Override
-	@Transactional
 	public PaymentCancelResponse cancelPayment(PaymentCancelRequest request) {
+		String auth = "Basic " + Base64.getEncoder()
+			.encodeToString(("test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:").getBytes());
+
+		Long reservationId = Long.parseLong(request.reservationId().replace("A", ""));
+
+		TossPayment payment = repository.findByReservationId(reservationId)
+			.orElseThrow(() -> new PaymentNotFoundException());
+
+		if (payment.getTossPaymentStatus() == TossPaymentStatus.REFUNDED ||
+			payment.getTossPaymentStatus() == TossPaymentStatus.CANCELED) {
+			throw new PaymentAlreadyCancelledException();
+		}
+
+		Map<String, Object> body = Map.of(
+			"cancelReason", "고객 요청 취소",
+			"cancelAmount", payment.getTotalAmount()
+		);
+
 		try {
-			Long reservationId = Long.parseLong(request.getReservationId().replace("A", ""));
-
-			TossPayment payment = repository.findByReservationId(reservationId)
-				.orElseThrow(() -> new PaymentNotFoundException());
-
-			if (payment.getTossPaymentStatus() == TossPaymentStatus.REFUNDED ||
-				payment.getTossPaymentStatus() == TossPaymentStatus.CANCELED) {
-				throw new PaymentAlreadyCancelledException();
-			}
-
-			reservationService.cancelReservation(request.getReservationId());
-
-			payment.setTossPaymentStatus(TossPaymentStatus.REFUNDED);
-			payment.setRefundedAt(LocalDateTime.now());
-
-			TossPayment savedPayment = repository.save(payment);
-
-			return PaymentCancelResponse.builder()
-				.paymentId(new String(savedPayment.getPaymentId()))
-				.reservationId(request.getReservationId())
-				.amount(savedPayment.getTotalAmount())
-				.refundedAt(savedPayment.getRefundedAt())
-				.build();
-
-		} catch (PaymentNotFoundException | PaymentAlreadyCancelledException e) {
-			throw e;
+			tossWebClient.post()
+				.uri("/v1/payments/" + payment.getTossPaymentKey() + "/cancel")
+				.header("Authorization", auth)
+				.header("Content-Type", "application/json")
+				.bodyValue(body)
+				.retrieve()
+				.bodyToMono(Void.class)
+				.block();
 		} catch (Exception e) {
 			throw new PaymentCancelFailedException();
 		}
+
+		reservationService.cancelReservation(request.reservationId());
+
+		payment.setTossPaymentStatus(TossPaymentStatus.REFUNDED);
+		payment.setRefundedAt(LocalDateTime.now());
+
+		TossPayment savedPayment = repository.save(payment);
+
+		return new PaymentCancelResponse(
+			request.reservationId(),
+			savedPayment.getTotalAmount(),
+			savedPayment.getRefundedAt()
+		);
+
 	}
 }
