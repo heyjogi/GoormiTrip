@@ -1,10 +1,13 @@
 package com.goormitrip.goormitrip.user.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
+import com.goormitrip.goormitrip.oauth.domain.OAuthAccount;
 import com.goormitrip.goormitrip.oauth.dto.OAuthAttributes;
 import com.goormitrip.goormitrip.user.dto.SignupRequest;
 
@@ -17,6 +20,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -45,6 +49,9 @@ public class UserEntity extends BaseTimeEntity {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private UserProfile profile;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OAuthAccount> oauthAccounts = new ArrayList<>();
 
 	@Builder
 	public static UserEntity of(String email, String password, UserRole role) {
