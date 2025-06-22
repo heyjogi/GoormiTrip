@@ -33,7 +33,8 @@ public class AuthService {
 	public AuthResponse signup(SignupRequest req) {
 		ensureEmailNotDuplicated(req.getEmail());
 
-		UserEntity user = UserEntity.createLocal(req, passwordEncoder);
+		String encodedPassword = passwordEncoder.encode(req.getPassword());
+		UserEntity user = UserEntity.createLocal(req, encodedPassword);
 		userRepository.save(user);
 
 		String jwt = jwtTokenProvider.createAccessToken(new CustomUserDetails(user));

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.goormitrip.goormitrip.global.util.BaseTimeEntity;
 import com.goormitrip.goormitrip.oauth.domain.OAuthAccount;
 import com.goormitrip.goormitrip.oauth.dto.OAuthAttributes;
@@ -62,10 +60,10 @@ public class UserEntity extends BaseTimeEntity {
 		return user;
 	}
 
-	public static UserEntity createLocal(SignupRequest req, PasswordEncoder encoder) {
+	public static UserEntity createLocal(SignupRequest req, String encodedPwd) {
 		UserEntity user = UserEntity.builder()
 			.email(req.getEmail())
-			.password(encoder.encode(req.getPassword()))
+			.password(encodedPwd)
 			.role(UserRole.USER)
 			.build();
 
@@ -94,6 +92,10 @@ public class UserEntity extends BaseTimeEntity {
 
 	public boolean isSocialUser() {
 		return UserRole.SOCIAL_USER == role;
+	}
+
+	public void changePassword(String encodedNewPwd) {
+		this.password = encodedNewPwd;
 	}
 }
 
