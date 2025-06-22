@@ -43,6 +43,12 @@ public class GlobalExceptionHandler {
 		return ApiResponse.error("권한이 없습니다.", HttpStatus.FORBIDDEN);
 	}
 
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
+		log.warn("Illegal argument: {}", ex.getMessage());
+		return ApiResponse.error(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ApiResponse<Void>> handleUnknown(RuntimeException ex) {
 		log.error("Unhandled exception", ex);
