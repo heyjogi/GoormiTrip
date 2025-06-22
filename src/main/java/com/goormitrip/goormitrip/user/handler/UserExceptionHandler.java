@@ -12,7 +12,9 @@ import com.goormitrip.goormitrip.user.exception.EmailDuplicateException;
 import com.goormitrip.goormitrip.user.exception.InvalidEmailFormatException;
 import com.goormitrip.goormitrip.user.exception.InvalidPasswordException;
 import com.goormitrip.goormitrip.user.exception.InvalidPhoneException;
+import com.goormitrip.goormitrip.user.exception.InvalidResetTokenException;
 import com.goormitrip.goormitrip.user.exception.LoginFailedException;
+import com.goormitrip.goormitrip.user.exception.MailSendFailedException;
 import com.goormitrip.goormitrip.user.exception.PhoneNotVerifiedException;
 import com.goormitrip.goormitrip.user.exception.PhoneVerificationFailedException;
 import com.goormitrip.goormitrip.user.exception.RequiredTermsUncheckedException;
@@ -90,6 +92,18 @@ public class UserExceptionHandler {
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<?> handleUserNotFound(final UserNotFoundException ex) {
 		log.warn("User not found: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(InvalidResetTokenException.class)
+	public ResponseEntity<?> handleInvalidResetToken(final InvalidResetTokenException ex) {
+		log.warn("Invalid reset token: {}", ex.getMessage());
+		return ApiResponse.error(ex.getErrorCode());
+	}
+
+	@ExceptionHandler(MailSendFailedException.class)
+	public ResponseEntity<?> handleMailSendFailed(final MailSendFailedException ex) {
+		log.error("Mail send failed: {}", ex.getMessage());
 		return ApiResponse.error(ex.getErrorCode());
 	}
 }
