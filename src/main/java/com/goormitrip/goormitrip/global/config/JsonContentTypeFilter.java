@@ -17,25 +17,26 @@ public class JsonContentTypeFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 
-		boolean isJsonMethod = "POST".equalsIgnoreCase(request.getMethod()) || "PUT".equalsIgnoreCase(request.getMethod());
+		boolean isJsonMethod = "POST".equalsIgnoreCase(request.getMethod())
+				|| "PUT".equalsIgnoreCase(request.getMethod());
 
 		if (isJsonMethod &&
-			!MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(request.getContentType())) {
+				!MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(request.getContentType())) {
 
 			response.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
 			response.getWriter().write("""
-                {
-                  "success": false,
-                  "response": null,
-                  "error": {
-                    "message": "요청 형식이 잘못되었습니다. JSON 형식인지 확인해주세요.",
-                    "status": 415
-                  }                }
-                """);
+					{
+					  "success": false,
+					  "response": null,
+					  "error": {
+					    "message": "요청 형식이 잘못되었습니다. JSON 형식인지 확인해주세요.",
+					    "status": 415
+					  }                }
+					""");
 			return;
 		}
 

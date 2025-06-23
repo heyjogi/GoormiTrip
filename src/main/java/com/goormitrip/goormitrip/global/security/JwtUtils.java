@@ -68,12 +68,12 @@ public class JwtUtils {
 
 	private String createToken(Map<String, Object> claims, String subject) {
 		return Jwts.builder()
-			.setClaims(claims)
-			.setSubject(subject)
-			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
-			.signWith(key, SignatureAlgorithm.HS512)
-			.compact();
+				.setClaims(claims)
+				.setSubject(subject)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+				.signWith(key, SignatureAlgorithm.HS512)
+				.compact();
 	}
 
 	public boolean isTokenValid(String token, UserDetails userDetails) {

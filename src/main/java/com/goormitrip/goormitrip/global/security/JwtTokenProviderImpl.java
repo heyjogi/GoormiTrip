@@ -30,22 +30,22 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 	public String createAccessToken(Long userId, UserRole role) {
 		Instant now = Instant.now();
 		return Jwts.builder()
-			.setSubject(String.valueOf(userId))
-			.claim("role", role)
-			.setIssuedAt(Date.from(now))
-			.setExpiration(Date.from(now.plusSeconds(900))) // 15 minutes
-			.signWith(key, SignatureAlgorithm.HS256)
-			.compact();
+				.setSubject(String.valueOf(userId))
+				.claim("role", role)
+				.setIssuedAt(Date.from(now))
+				.setExpiration(Date.from(now.plusSeconds(900))) // 15 minutes
+				.signWith(key, SignatureAlgorithm.HS256)
+				.compact();
 	}
 
 	public String createRefreshToken(Long userId) {
 		Instant now = Instant.now();
 		return Jwts.builder()
-			.setSubject(String.valueOf(userId))
-			.setIssuedAt(Date.from(now))
-			.setExpiration(Date.from(now.plusSeconds(1209600))) // 14 days
-			.signWith(key, SignatureAlgorithm.HS256)
-			.compact();
+				.setSubject(String.valueOf(userId))
+				.setIssuedAt(Date.from(now))
+				.setExpiration(Date.from(now.plusSeconds(1209600))) // 14 days
+				.signWith(key, SignatureAlgorithm.HS256)
+				.compact();
 	}
 
 	public boolean isValid(String token) {
@@ -59,10 +59,10 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
 	public Long extractUserId(String token) {
 		return Long.valueOf(Jwts.parserBuilder()
-			.setSigningKey(key)
-			.build()
-			.parseClaimsJws(token)
-			.getBody()
-			.getSubject());
+				.setSigningKey(key)
+				.build()
+				.parseClaimsJws(token)
+				.getBody()
+				.getSubject());
 	}
 }

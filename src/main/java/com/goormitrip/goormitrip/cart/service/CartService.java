@@ -10,7 +10,7 @@ import java.util.List;
 public interface CartService {
     void addToCart(UserEntity user, Product product, int peopleCount, String travelDate);
 
-    void removeFromCartItem(Long cartItemId);
+    void removeFromCartItem(Long itemId, UserEntity user);
 
     List<CartItem> getCartItems(UserEntity user);
 

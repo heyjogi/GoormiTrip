@@ -40,7 +40,7 @@ public class SecurityConfig {
 
 	@Bean
 	public AuthenticationManager authenticationManager(
-		AuthenticationConfiguration authenticationConfiguration) throws Exception {
+			AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
@@ -56,25 +56,22 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth ->
-				auth.requestMatchers(
-					new AntPathRequestMatcher("/"),
-					new AntPathRequestMatcher("/health"),
-					new AntPathRequestMatcher("/users/**"),
-					new AntPathRequestMatcher("/auth/**"),
-					new AntPathRequestMatcher("/error"),
-					new AntPathRequestMatcher("/api/products/**"),
-					new AntPathRequestMatcher("/verification/phone/**"),
-					new AntPathRequestMatcher("/kakao/webhook"),
-					new AntPathRequestMatcher("/oauth2/**")
-				).permitAll().anyRequest().authenticated()
-			)
-			.authenticationProvider(authenticationProvider())
-			.oauth2Login(o -> o
-				.userInfoEndpoint(u -> u.userService(oAuth2UserSvc))
-				.successHandler(successHandler))
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(auth -> auth.requestMatchers(
+						new AntPathRequestMatcher("/"),
+						new AntPathRequestMatcher("/health"),
+						new AntPathRequestMatcher("/users/**"),
+						new AntPathRequestMatcher("/auth/**"),
+						new AntPathRequestMatcher("/error"),
+						new AntPathRequestMatcher("/api/products/**"),
+						new AntPathRequestMatcher("/verification/phone/**"),
+						new AntPathRequestMatcher("/kakao/webhook"),
+						new AntPathRequestMatcher("/oauth2/**")).permitAll().anyRequest().authenticated())
+				.authenticationProvider(authenticationProvider())
+				.oauth2Login(o -> o
+						.userInfoEndpoint(u -> u.userService(oAuth2UserSvc))
+						.successHandler(successHandler))
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

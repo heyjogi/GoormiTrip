@@ -6,6 +6,7 @@ import com.goormitrip.goormitrip.cart.dto.CartItemResponse;
 import com.goormitrip.goormitrip.cart.repository.CartItemRepository;
 import com.goormitrip.goormitrip.cart.repository.CartRepository;
 import com.goormitrip.goormitrip.cart.service.CartService;
+import com.goormitrip.goormitrip.cart.exception.CartItemNotFoundException;
 import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 
@@ -46,8 +47,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeFromCartItem(Long cartItemId) {
-        cartItemRepository.deleteById(cartItemId);
+    public void removeFromCartItem(Long itemId, UserEntity user) {
+        CartItem item = cartItemRepository.findById(itemId)
+                .orElseThrow(() -> new CartItemNotFoundException(itemId));
+
+        if (!item.getCart().getUser().getId().equals(user.getId())) {
+            throw new ForbiddenException("해당 장바구니 항목에 대한 삭제 권한이 없습니다.");
+        }
+
+        cartItemRepository.delete(item);
     }
 
     @Override
