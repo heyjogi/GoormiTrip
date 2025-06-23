@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goormitrip.goormitrip.global.security.CustomUserDetails;
-import com.goormitrip.goormitrip.global.security.JwtUtils;
+import com.goormitrip.goormitrip.global.security.JwtTokenProvider;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
-import com.goormitrip.goormitrip.user.domain.UserRole;
 import com.goormitrip.goormitrip.user.dto.AuthRequest;
 import com.goormitrip.goormitrip.user.dto.AuthResponse;
 import com.goormitrip.goormitrip.user.dto.SignupRequest;
@@ -28,26 +27,24 @@ public class AuthService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	private final JwtUtils jwtUtils;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	@Transactional
-	public AuthResponse signup(SignupRequest request) {
-		if (userRepository.existsByEmail(request.getEmail())) {
-			throw new EmailDuplicateException();
-		}
+	public AuthResponse signup(SignupRequest req) {
+		ensureEmailNotDuplicated(req.getEmail());
 
-		UserEntity user = new UserEntity();
-		user.setEmail(request.getEmail());
-		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		user.setPhone(request.getPhone());
-		user.setRole(UserRole.USER);
-
+		String encodedPassword = passwordEncoder.encode(req.getPassword());
+		UserEntity user = UserEntity.createLocal(req, encodedPassword);
 		userRepository.save(user);
 
-		CustomUserDetails userDetails = new CustomUserDetails(user);
-		String jwt = jwtUtils.generateToken(userDetails);
-
+		String jwt = jwtTokenProvider.createAccessToken(new CustomUserDetails(user));
 		return new AuthResponse(jwt, user.getEmail(), user.getRole().name());
+	}
+
+	private void ensureEmailNotDuplicated(String email) {
+		if (userRepository.existsByEmail(email)) {
+			throw new EmailDuplicateException();
+		}
 	}
 
 	public AuthResponse login(AuthRequest request) {
@@ -57,9 +54,8 @@ public class AuthService {
 
 		CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
 
-		String jwt = jwtUtils.generateToken(userDetails);
+		String jwt = jwtTokenProvider.createAccessToken(userDetails);
 
 		return new AuthResponse(jwt, userDetails.getEmail(), userDetails.getRole().name());
 	}
-
 }

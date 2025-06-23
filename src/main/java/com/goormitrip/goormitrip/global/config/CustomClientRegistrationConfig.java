@@ -30,7 +30,21 @@ public class CustomClientRegistrationConfig {
 			.clientName("Kakao")
 			.build();
 
+		final ClientRegistration naver = ClientRegistration.withRegistrationId("naver")
+			.clientId(props.getRegistration().get("naver").getClientId())
+			.clientSecret(props.getRegistration().get("naver").getClientSecret())
+			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+			.redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+			.scope("nickname", "email", "profile_image")
+			.authorizationUri("https://nid.naver.com/oauth2.0/authorize")
+			.tokenUri("https://nid.naver.com/oauth2.0/token")
+			.userInfoUri("https://openapi.naver.com/v1/nid/me")
+			.userNameAttributeName("response")
+			.clientName("Naver")
+			.build();
+
 		return new InMemoryClientRegistrationRepository(
-			kakao);
+			kakao, naver);
 	}
 }
