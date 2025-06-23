@@ -19,22 +19,4 @@ public enum ProductError implements ErrorCode {
 	private final String code;
 	private final String message;
 
-	public ErrorCode withMessage(String customMessage) {
-		return new ErrorCode() {
-			@Override
-			public HttpStatus getStatus() {
-				return status;
-			}
-
-			@Override
-			public String getCode() {
-				return code;
-			}
-
-			@Override
-			public String getMessage() {
-				return customMessage;
-			}
-		};
-	}
 }

@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     List<Product> findByTitleContaining(String keyword);
+
     List<Product> findByStatus(ProductStatus status);
+
     List<Product> findByRegion(String region);
+
     List<Product> findByTheme(String theme);
 }

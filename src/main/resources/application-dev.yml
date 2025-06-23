@@ -9,6 +9,14 @@ spring:
       ddl-auto: create
   config:
     import: optional:env[.env]
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_ID}
+    password: ${MAIL_PW}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
 
 logging:
   level:

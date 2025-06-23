@@ -1,13 +1,14 @@
 package com.goormitrip.goormitrip.global.security;
 
-import com.goormitrip.goormitrip.user.domain.UserRole;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtTokenProvider {
-	String createAccessToken(Long userId, UserRole role);
 
-	String createRefreshToken(Long userId);
+	String createAccessToken(UserDetails userDetails);
 
-	boolean isValid(String token);
+	String createRefreshToken(UserDetails userDetails);
 
-	Long extractUserId(String token);
+	boolean isTokenValid(String token, UserDetails userDetails);
+
+	String extractUsername(String token);
 }

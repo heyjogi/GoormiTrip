@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.product.domain.ProductStatus;
+import com.goormitrip.goormitrip.product.exception.KeywordRequiredException;
 import com.goormitrip.goormitrip.product.exception.ProductComparisonMinimumException;
 import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
 import com.goormitrip.goormitrip.product.exception.ValidationUtils;
@@ -34,7 +35,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> searchByKeyword(String keyword) {
-		ValidationUtils.validateKeyword(keyword);
+		if (keyword == null || keyword.trim().isEmpty()) {
+			throw new KeywordRequiredException();
+		}
 		return productRepository.findByTitleContaining(keyword);
 	}
 

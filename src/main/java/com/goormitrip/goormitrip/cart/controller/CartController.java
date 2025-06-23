@@ -3,6 +3,8 @@ package com.goormitrip.goormitrip.cart.controller;
 import com.goormitrip.goormitrip.cart.dto.CartItemResponse;
 import com.goormitrip.goormitrip.cart.service.CartService;
 import com.goormitrip.goormitrip.product.domain.Product;
+import com.goormitrip.goormitrip.product.exception.ProductNotFoundException;
+import com.goormitrip.goormitrip.product.repository.ProductRepository;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
+    private final ProductRepository productRepository;
 
     @PostMapping
     public ResponseEntity<?> addToCart(
@@ -25,14 +28,15 @@ public class CartController {
             @RequestParam int peopleCount,
             @RequestParam String travelDate,
             @AuthenticationPrincipal UserEntity user) {
-        Product product = Product.builder().id(productId).build();
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ProductNotFoundException(productId));
         cartService.addToCart(user, product, peopleCount, travelDate);
         return ResponseEntity.ok("장바구니에 추가됨");
     }
 
     @DeleteMapping("/item/{id}")
-    public void removeFromCart(@PathVariable Long id) {
-        cartService.removeFromCartItem(id);
+    public void removeFromCart(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
+        cartService.removeFromCartItem(id, user);
     }
 
     @GetMapping
