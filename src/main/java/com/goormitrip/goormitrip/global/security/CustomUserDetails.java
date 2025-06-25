@@ -30,6 +30,10 @@ public class CustomUserDetails implements UserDetails {
 		return UserRole.SOCIAL_USER == role;
 	}
 
+	public boolean isAdmin() {
+		return UserRole.ADMIN == role;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
