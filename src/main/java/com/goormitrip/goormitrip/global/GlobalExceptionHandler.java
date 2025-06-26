@@ -49,6 +49,12 @@ public class GlobalExceptionHandler {
 		return ApiResponse.error(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ApiResponse<Void>> handleIllegalState(IllegalStateException ex) {
+		log.warn("Illegal state: {}", ex.getMessage());
+		return ApiResponse.error(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ApiResponse<Void>> handleUnknown(RuntimeException ex) {
 		log.error("Unhandled exception", ex);

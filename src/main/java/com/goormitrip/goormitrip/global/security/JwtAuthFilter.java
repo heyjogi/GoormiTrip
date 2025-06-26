@@ -24,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private final JwtTokenProvider jwtTokenProvider;
-
 	private final UserDetailsService userDetailsService;
+	private final JwtAuthEntryPoint authEntryPoint;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -44,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			String userEmail = jwtTokenProvider.extractUsername(token);
 
 			if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-				UserDetails userDetails = this.userDetailsService.loadUserByUsername((userEmail));
+				UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
 				if (!jwtTokenProvider.isTokenValid(token, userDetails)) {
 					throw new JwtAuthenticationException("Invalid JWT");
@@ -57,10 +57,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			}
 		} catch (AuthenticationException ex) {
 			SecurityContextHolder.clearContext();
-			throw ex;
-		} catch (Exception ex) {
-			log.error("[JWT] 예외 발생: {}", ex.getMessage(), ex);
-			SecurityContextHolder.clearContext();
+			authEntryPoint.commence(request, response, ex);
+			return;
 		}
 
 		filterChain.doFilter(request, response);
