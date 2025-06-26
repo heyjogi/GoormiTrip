@@ -6,7 +6,11 @@ import com.goormitrip.goormitrip.cart.dto.CartItemResponse;
 import com.goormitrip.goormitrip.cart.repository.CartItemRepository;
 import com.goormitrip.goormitrip.cart.repository.CartRepository;
 import com.goormitrip.goormitrip.cart.service.CartService;
+import com.goormitrip.goormitrip.cart.exception.CartItemNotFoundException;
+import com.goormitrip.goormitrip.cart.exception.CartNotFoundException;
+import com.goormitrip.goormitrip.cart.exception.ForbiddenException;
 import com.goormitrip.goormitrip.product.domain.Product;
+import com.goormitrip.goormitrip.product.exception.InvalidRequestParameterException;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 import jakarta.transaction.Transactional;
@@ -27,6 +31,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addToCart(UserEntity user, Product product, int peopleCount, String travelDate) {
+        if (peopleCount < 1) {
+            throw new InvalidRequestParameterException("인원 수는 1명 이상이어야 합니다.");
+        }
+        
         Cart cart = cartRepository.findByUser(user)
                 .orElseGet(() -> cartRepository.save(
                         Cart.builder()
@@ -46,14 +54,21 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeFromCartItem(Long cartItemId) {
-        cartItemRepository.deleteById(cartItemId);
+    public void removeFromCartItem(Long itemId, UserEntity user) {
+        CartItem item = cartItemRepository.findById(itemId)
+                .orElseThrow(() -> new CartItemNotFoundException(itemId));
+
+        if (!item.getCart().getUser().getId().equals(user.getId())) {
+            throw new ForbiddenException();
+        }
+
+        cartItemRepository.delete(item);
     }
 
     @Override
     public List<CartItem> getCartItems(UserEntity user) {
         Cart cart = cartRepository.findByUser(user)
-                .orElseThrow(() -> new IllegalArgumentException("Cart not found"));
+                .orElseThrow(CartNotFoundException::new);
 
         return cartItemRepository.findByCart(cart);
     }

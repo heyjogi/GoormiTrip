@@ -29,10 +29,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
 		final String msg = ex.getBindingResult().getFieldErrors()
-			.stream()
-			.map(FieldError::getDefaultMessage)
-			.findFirst()
-			.orElse("잘못된 입력입니다.");
+				.stream()
+				.map(FieldError::getDefaultMessage)
+				.findFirst()
+				.orElse("잘못된 입력입니다.");
 		log.warn("Validation error: {}", msg);
 		return ApiResponse.error(msg, HttpStatus.BAD_REQUEST);
 	}

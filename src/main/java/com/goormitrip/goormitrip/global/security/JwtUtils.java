@@ -39,7 +39,7 @@ public class JwtUtils implements JwtTokenProvider {
 	@Override
 	public String createAccessToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		CustomUserDetails customUserDetails = (CustomUserDetails)userDetails;
+		CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
 		claims.put("role", customUserDetails.getRole().name());
 		return createToken(claims, customUserDetails.getUsername(), ACCESS_TOKEN_EXPIRATION);
 	}
@@ -52,12 +52,12 @@ public class JwtUtils implements JwtTokenProvider {
 	private String createToken(Map<String, Object> claims, String subject, long expirySeconds) {
 		Instant now = Instant.now();
 		return Jwts.builder()
-			.setClaims(claims)
-			.setSubject(subject)
-			.setIssuedAt(Date.from(now))
-			.setExpiration(Date.from(now.plusSeconds(expirySeconds)))
-			.signWith(key, SignatureAlgorithm.HS512)
-			.compact();
+				.setClaims(claims)
+				.setSubject(subject)
+				.setIssuedAt(Date.from(now))
+				.setExpiration(Date.from(now.plusSeconds(expirySeconds)))
+				.signWith(key, SignatureAlgorithm.HS512)
+				.compact();
 	}
 
 	private boolean isValid(String token) {

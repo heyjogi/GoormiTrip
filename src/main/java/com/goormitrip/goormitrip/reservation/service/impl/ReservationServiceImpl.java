@@ -39,22 +39,23 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<LocalDate> getAvailableDates(Long productId) {
-        List<Reservation> reservations = reservationRepository.findByProductIdAndStatus(productId, ReservationStatus.RESERVED);
+        List<Reservation> reservations = reservationRepository.findByProductIdAndStatus(productId,
+                ReservationStatus.RESERVED);
 
         Set<LocalDate> reservedDates = reservations.stream()
-            .map(Reservation::getTravelDate)
-            .collect(Collectors.toSet());
+                .map(Reservation::getTravelDate)
+                .collect(Collectors.toSet());
 
         LocalDate today = LocalDate.now();
         return today.datesUntil(today.plusDays(30))
-            .filter(date -> !reservedDates.contains(date))
-            .collect(Collectors.toList());
+                .filter(date -> !reservedDates.contains(date))
+                .collect(Collectors.toList());
     }
 
     @Override
     public ReservationResponse createReservation(ReservationRequest request) {
         Product product = productRepository.findById(request.getProductId())
-            .orElseThrow(() -> new ProductNotFoundException());
+                .orElseThrow(() -> new ProductNotFoundException(request.getProductId()));
         if (request.getPeopleCount() < product.getMinPeople() || request.getPeopleCount() > product.getMaxPeople()) {
             throw new InvalidPeopleCountException(product.getMinPeople(), product.getMaxPeople());
         }
@@ -68,22 +69,22 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation saved = reservationRepository.save(reservation);
 
         return ReservationResponse.builder()
-            .reservationId("A" + saved.getId())
-            .productId(product.getId())
-            .createdAt(saved.getCreatedAt())
-            .travelDate(saved.getTravelDate())
-            .peopleCount(saved.getPeopleCount())
-            .build();
+                .reservationId("A" + saved.getId())
+                .productId(product.getId())
+                .createdAt(saved.getCreatedAt())
+                .travelDate(saved.getTravelDate())
+                .peopleCount(saved.getPeopleCount())
+                .build();
     }
 
     @Override
     @Transactional
     public ReservationUpdateResponse updateReservation(String reservationId, ReservationUpdateRequest request,
-        Long userId) {
+            Long userId) {
         Long id = Long.parseLong(reservationId.replace("A", ""));
 
         Reservation reservation = reservationRepository.findById(id)
-            .orElseThrow(() -> new ReservationNotFoundException());
+                .orElseThrow(() -> new ReservationNotFoundException());
 
         if (reservation.getStatus() == ReservationStatus.CANCELLED) {
             throw new ReservationAlreadyCancelledException();
@@ -101,8 +102,8 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         boolean dateReserved = reservationRepository.findByProductIdAndTravelDate(product.getId(), travelDate)
-            .stream()
-            .anyMatch(r -> r.getStatus() == ReservationStatus.RESERVED && !r.getId().equals(reservation.getId()));
+                .stream()
+                .anyMatch(r -> r.getStatus() == ReservationStatus.RESERVED && !r.getId().equals(reservation.getId()));
 
         if (dateReserved) {
             throw new InvalidTravelDateException();
@@ -112,13 +113,13 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setPeopleCount(request.getPeopleCount());
 
         return ReservationUpdateResponse.builder()
-            .reservationId("A" + reservation.getId())
-            .userId(userId)
-            .productId(product.getId())
-            .updatedAt(reservation.getUpdatedAt())
-            .travelDate(travelDate)
-            .peopleCount(request.getPeopleCount())
-            .build();
+                .reservationId("A" + reservation.getId())
+                .userId(userId)
+                .productId(product.getId())
+                .updatedAt(reservation.getUpdatedAt())
+                .travelDate(travelDate)
+                .peopleCount(request.getPeopleCount())
+                .build();
     }
 
     @Override
@@ -127,7 +128,7 @@ public class ReservationServiceImpl implements ReservationService {
         Long id = Long.parseLong(reservationId.replace("A", ""));
 
         Reservation reservation = reservationRepository.findById(id)
-            .orElseThrow(() -> new ReservationNotFoundException());
+                .orElseThrow(() -> new ReservationNotFoundException());
 
         if (reservation.getStatus() == ReservationStatus.CANCELLED) {
             throw new ReservationAlreadyCancelledException();
@@ -141,9 +142,9 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setStatus(ReservationStatus.CANCELLED);
 
         return ReservationCancelResponse.builder()
-            .reservationId("A" + reservation.getId())
-            .updatedAt(reservation.getUpdatedAt())
-            .build();
+                .reservationId("A" + reservation.getId())
+                .updatedAt(reservation.getUpdatedAt())
+                .build();
 
     }
 }

@@ -6,6 +6,10 @@ import com.goormitrip.goormitrip.wishlist.domain.Wishlist;
 import com.goormitrip.goormitrip.wishlist.dto.WishlistResponse;
 import com.goormitrip.goormitrip.wishlist.service.WishlistService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +22,28 @@ public class WishlistController {
     private final WishlistService wishlistService;
 
     @PostMapping
-    public void addToWishlist(
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> addToWishlist(
             @RequestParam Long productId,
-            @RequestAttribute("user") UserEntity user) {
+            @AuthenticationPrincipal UserEntity user) {
         Product product = Product.builder().id(productId).build();
         wishlistService.addToWishlist(user, product);
+
+        return ResponseEntity.ok("찜한 상품에 추가되었습니다.");
     }
 
     @DeleteMapping
+    @PreAuthorize("isAuthenticated()")
     public void removeFromWishlist(
             @RequestParam Long productId,
-            @RequestAttribute("user") UserEntity user) {
+            @AuthenticationPrincipal UserEntity user) {
         Product product = Product.builder().id(productId).build();
         wishlistService.removeFromWishlist(user, product);
     }
 
     @GetMapping
-    public List<WishlistResponse> getWishlist(@RequestAttribute("user") UserEntity user) {
+    @PreAuthorize("isAuthenticated()")
+    public List<WishlistResponse> getWishlist(@AuthenticationPrincipal UserEntity user) {
         List<Wishlist> wishlists = wishlistService.getWishlist(user);
 
         return wishlists.stream()

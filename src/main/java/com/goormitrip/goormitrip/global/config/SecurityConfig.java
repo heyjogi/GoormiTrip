@@ -45,7 +45,7 @@ public class SecurityConfig {
 
 	@Bean
 	public AuthenticationManager authenticationManager(
-		AuthenticationConfiguration authenticationConfiguration) throws Exception {
+			AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
@@ -57,27 +57,25 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/health", "/error").permitAll()
-				.requestMatchers("/auth/**", "/oauth2/**").permitAll()
-				.requestMatchers("/verification/phone/**", "/kakao/webhook").permitAll()
-				// 25.06.21 회원가입과 로그인 로직은 허용하도록 했습니다
-				.requestMatchers(HttpMethod.POST, "/users/**").permitAll()
-				.requestMatchers("/api/products/**").permitAll()
-				.anyRequest().authenticated()
-			)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable)
-			.exceptionHandling(ex -> ex
-				.authenticationEntryPoint(authEntryPoint)
-				.accessDeniedHandler(deniedHandler)
-			)
-			.authenticationProvider(authenticationProvider())
-			.oauth2Login(o -> o
-				.userInfoEndpoint(u -> u.userService(oAuth2UserSvc))
-				.successHandler(successHandler))
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/", "/health", "/error").permitAll()
+						.requestMatchers("/auth/**", "/oauth2/**").permitAll()
+						.requestMatchers("/verification/phone/**", "/kakao/webhook").permitAll()
+						// 25.06.21 회원가입과 로그인 로직은 허용하도록 했습니다
+						.requestMatchers(HttpMethod.POST, "/users/**").permitAll()
+						.requestMatchers("/api/products/**").permitAll()
+						.anyRequest().authenticated())
+				.formLogin(AbstractHttpConfigurer::disable)
+				.httpBasic(AbstractHttpConfigurer::disable)
+				.exceptionHandling(ex -> ex
+						.authenticationEntryPoint(authEntryPoint)
+						.accessDeniedHandler(deniedHandler))
+				.authenticationProvider(authenticationProvider())
+				.oauth2Login(o -> o
+						.userInfoEndpoint(u -> u.userService(oAuth2UserSvc))
+						.successHandler(successHandler))
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
