@@ -17,22 +17,26 @@ import lombok.extern.slf4j.Slf4j;
 public class CartExceptionHandler {
 
     @ExceptionHandler(CartItemNotFoundException.class)
-	public ResponseEntity<?> handleCartItemNotFound(CartItemNotFoundException ex) {
-		log.warn("Cart item not found: {}", 
-    	return ResponseEntity
-    		.status(ex.getErrorCode().getStatus())
-        	.body(ApiResponse.error(ex));
-        
-                
-                @ExceptionHandler(CartNotFoun
-     
+    public ResponseEntity<?> handleCartItemNotFound(CartItemNotFoundException ex) {
+        log.warn("Cart item not found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(ex.getErrorCode().getStatus())
+                .body(ApiResponse.error(ex));
+    }
 
-           return ResponseEntity
-               .status(ex.getErrorCode().getStatus())
-                  .body(ApiResponse.error(ex));
-          }
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<?> handleCartNotFound(CartNotFoundException ex) {
+        log.warn("Cart not found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(ex.getErrorCode().getStatus())
+                .body(ApiResponse.error(ex));
+    }
 
-    @ExceptionHandler(ForbiddenEx
-
-    return ResponseEntity.status(ex.getErrorCode().getStatus()).body(ApiResponse.error(ex));
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<?> handleForbidden(ForbiddenException ex) {
+        log.warn("Access forbidden: {}", ex.getMessage());
+        return ResponseEntity
+                .status(ex.getErrorCode().getStatus())
+                .body(ApiResponse.error(ex));
+    }
 }

@@ -37,7 +37,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
 	@Transactional
 	public void resetPassword(String token, String newPwd) {
 		PasswordResetToken prt = tokenRepo.findByToken(token)
-			.orElseThrow(InvalidResetTokenException::new);
+				.orElseThrow(InvalidResetTokenException::new);
 
 		if (prt.isExpired() || prt.isUsed()) {
 			throw new InvalidResetTokenException();

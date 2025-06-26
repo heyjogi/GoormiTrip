@@ -3,6 +3,8 @@ package com.goormitrip.goormitrip.wishlist.service.impl;
 import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 import com.goormitrip.goormitrip.wishlist.domain.Wishlist;
+import com.goormitrip.goormitrip.wishlist.exception.AlreadyWishlistedException;
+import com.goormitrip.goormitrip.wishlist.exception.WishlistNotFoundException;
 import com.goormitrip.goormitrip.wishlist.repository.WishlistRepository;
 import com.goormitrip.goormitrip.wishlist.service.WishlistService;
 import jakarta.transaction.Transactional;
@@ -22,7 +24,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public void addToWishlist(UserEntity user, Product product) {
         if (wishlistRepository.existsByUserAndProduct(user, product)) {
-            throw new IllegalStateException("이미 찜한 상품입니다.");
+            throw new AlreadyWishlistedException(product.getId());
         }
 
         Wishlist wishlist = Wishlist.builder()
@@ -36,8 +38,10 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public void removeFromWishlist(UserEntity user, Product product) {
-        wishlistRepository.findByUserAndProduct(user, product)
-                .ifPresent(wishlistRepository::delete);
+        Wishlist wishlist = wishlistRepository.findByUserAndProduct(user, product)
+                .orElseThrow(() -> new WishlistNotFoundException(product.getId()));
+
+        wishlistRepository.delete(wishlist);
     }
 
     @Override
