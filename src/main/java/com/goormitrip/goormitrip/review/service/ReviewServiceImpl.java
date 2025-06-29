@@ -12,6 +12,7 @@ import com.goormitrip.goormitrip.review.dto.CreateReviewRequest;
 import com.goormitrip.goormitrip.review.dto.MyReviewResponse;
 import com.goormitrip.goormitrip.review.dto.ReviewResponse;
 import com.goormitrip.goormitrip.review.dto.UpdateReviewRequest;
+import com.goormitrip.goormitrip.review.exception.DuplicateReviewException;
 import com.goormitrip.goormitrip.review.exception.ReviewNotFoundException;
 import com.goormitrip.goormitrip.review.repository.ReviewRepository;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
@@ -37,6 +38,10 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public ReviewResponse createReview(Long userId, Long productId, CreateReviewRequest req) {
+		if (reviewRepo.existsByAuthorIdAndProductId(userId, productId)) {
+			throw new DuplicateReviewException();
+		}
+		
 		UserEntity author = userRepo.getReferenceById(userId);
 		Product product = productRepo.getReferenceById(productId);
 
@@ -66,7 +71,6 @@ public class ReviewServiceImpl implements ReviewService {
 		reviewRepo.delete(review);
 	}
 
-	// ───────────────────────── private helpers ─────────────────────────
 	private Review getOwnedReviewOrThrow(Long userId, Long reviewId) {
 		Review review = reviewRepo.findById(reviewId)
 			.orElseThrow(ReviewNotFoundException::new);
