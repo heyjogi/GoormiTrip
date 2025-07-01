@@ -12,7 +12,6 @@ import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.global.util.response.ApiResponse;
 import com.goormitrip.goormitrip.product.dto.RecentProductResponse;
 import com.goormitrip.goormitrip.product.service.RecentProductService;
-import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 @RestController
 @RequestMapping("/mypage")
@@ -26,10 +25,11 @@ public class MyPageProductController {
 
 	@GetMapping("/recent-products")
 	public ResponseEntity<ApiResponse<List<RecentProductResponse>>> getRecentProducts(
-		@AuthenticationPrincipal UserEntity user
+		@AuthenticationPrincipal CustomUserDetails userDetails
 	) {
-		
-		List<RecentProductResponse> result = recentProductService.getRecentViewedProducts(user);
+
+		Long userId = userDetails.getId();
+		List<RecentProductResponse> result = recentProductService.getRecentViewedProducts(userId);
 
 		return ApiResponse.ok(result);
 	}

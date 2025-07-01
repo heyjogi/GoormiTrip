@@ -10,7 +10,6 @@ import com.goormitrip.goormitrip.product.dto.RecentProductResponse;
 import com.goormitrip.goormitrip.product.repository.ProductRepository;
 import com.goormitrip.goormitrip.product.repository.RecentProductRepository;
 import com.goormitrip.goormitrip.product.service.RecentProductService;
-import com.goormitrip.goormitrip.user.domain.UserEntity;
 
 @Service
 public class RecentProductServiceImpl implements RecentProductService {
@@ -25,10 +24,10 @@ public class RecentProductServiceImpl implements RecentProductService {
 	}
 
 	@Override
-	public List<RecentProductResponse> getRecentViewedProducts(UserEntity user) {
-		List<Long> recentProductIds = recentProductRepository.findRecentProductIdsByUser(user);
+	public List<RecentProductResponse> getRecentViewedProducts(Long userId) {
+		List<Long> recentProductIds = recentProductRepository.findRecentProductIdsByUser(userId);
 
-		List<Product> products = productRepository.findByProductId(recentProductIds);
+		List<Product> products = productRepository.findByIdIn(recentProductIds);
 
 		Map<Long, Product> productMap = products.stream()
 			.collect(Collectors.toMap(Product::getId, p -> p));
