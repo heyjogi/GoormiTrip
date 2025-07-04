@@ -3,6 +3,7 @@ package com.goormitrip.goormitrip.wishlist.service.impl;
 import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.user.domain.UserEntity;
 import com.goormitrip.goormitrip.wishlist.domain.Wishlist;
+import com.goormitrip.goormitrip.wishlist.dto.WishlistResponse;
 import com.goormitrip.goormitrip.wishlist.exception.AlreadyWishlistedException;
 import com.goormitrip.goormitrip.wishlist.exception.WishlistNotFoundException;
 import com.goormitrip.goormitrip.wishlist.repository.WishlistRepository;
@@ -45,7 +46,15 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public List<Wishlist> getWishlist(UserEntity user) {
-        return wishlistRepository.findByUser(user);
+    public List<WishlistResponse> getWishlist(UserEntity user) {
+        return wishlistRepository.findByUser(user)
+            .stream()
+            .map(wishlist -> WishlistResponse.builder()
+                .id(wishlist.getId())
+                .productId(wishlist.getProduct().getId())
+                .productTitle(wishlist.getProduct().getTitle())
+                .thumbnail(wishlist.getProduct().getThumbnail())
+                .build())
+            .toList();
     }
 }

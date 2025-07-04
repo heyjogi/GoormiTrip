@@ -15,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByRegion(String region);
 
     List<Product> findByTheme(String theme);
+
+    List<Product> findByIdIn(List<Long> productIds);
 }

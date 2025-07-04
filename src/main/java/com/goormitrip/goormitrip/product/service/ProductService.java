@@ -2,6 +2,7 @@ package com.goormitrip.goormitrip.product.service;
 
 import com.goormitrip.goormitrip.product.domain.Product;
 import com.goormitrip.goormitrip.product.domain.ProductStatus;
+
 import java.util.List;
 
 public interface ProductService {

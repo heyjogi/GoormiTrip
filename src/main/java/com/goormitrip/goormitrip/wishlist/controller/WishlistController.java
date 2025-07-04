@@ -41,18 +41,4 @@ public class WishlistController {
         wishlistService.removeFromWishlist(user, product);
     }
 
-    @GetMapping
-    @PreAuthorize("isAuthenticated()")
-    public List<WishlistResponse> getWishlist(@AuthenticationPrincipal UserEntity user) {
-        List<Wishlist> wishlists = wishlistService.getWishlist(user);
-
-        return wishlists.stream()
-                .map(wishlist -> WishlistResponse.builder()
-                        .id(wishlist.getId())
-                        .productId(wishlist.getProduct().getId())
-                        .productTitle(wishlist.getProduct().getTitle())
-                        .thumbnail(wishlist.getProduct().getThumbnail())
-                        .build())
-                .toList();
-    }
 }
