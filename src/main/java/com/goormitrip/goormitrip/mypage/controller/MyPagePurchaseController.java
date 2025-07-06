@@ -15,7 +15,6 @@ import com.goormitrip.goormitrip.mypage.service.MyPurchaseService;
 
 @RestController
 @RequestMapping("/mypage/purchases")
-
 public class MyPagePurchaseController {
 
     private final MyPurchaseService myPurchaseService;

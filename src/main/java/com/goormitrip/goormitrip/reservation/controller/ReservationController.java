@@ -33,20 +33,18 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<ReservationResponse>> createReservation(
-        @RequestBody ReservationRequest request,
-        @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
+            @RequestBody ReservationRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
-        ReservationResponse response = reservationService.createReservation(request);
+        ReservationResponse response = reservationService.createReservation(request, userId);
         return ApiResponse.ok(response);
     }
 
     @PutMapping
     public ResponseEntity<ApiResponse<ReservationUpdateResponse>> updateReservation(
-        @RequestParam String reservationId,
-        @RequestBody ReservationUpdateRequest request,
-        @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
+            @RequestParam String reservationId,
+            @RequestBody ReservationUpdateRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getId();
         ReservationUpdateResponse response = reservationService.updateReservation(reservationId, request, userId);
         return ApiResponse.ok(response);

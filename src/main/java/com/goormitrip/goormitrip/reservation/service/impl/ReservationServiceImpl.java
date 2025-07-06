@@ -18,6 +18,8 @@ import com.goormitrip.goormitrip.reservation.exception.ReservationNotFoundExcept
 import com.goormitrip.goormitrip.product.repository.ProductRepository;
 import com.goormitrip.goormitrip.reservation.repository.ReservationRepository;
 import com.goormitrip.goormitrip.reservation.service.ReservationService;
+import com.goormitrip.goormitrip.user.domain.UserEntity;
+import com.goormitrip.goormitrip.user.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +33,13 @@ import java.util.stream.Collectors;
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, ProductRepository productRepository) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, ProductRepository productRepository,
+            UserRepository userRepository) {
         this.reservationRepository = reservationRepository;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -53,14 +58,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationResponse createReservation(ReservationRequest request) {
+    public ReservationResponse createReservation(ReservationRequest request, Long userId) {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ProductNotFoundException(request.getProductId()));
         if (request.getPeopleCount() < product.getMinPeople() || request.getPeopleCount() > product.getMaxPeople()) {
             throw new InvalidPeopleCountException(product.getMinPeople(), product.getMaxPeople());
         }
 
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Reservation reservation = new Reservation();
+        reservation.setUser(user);
         reservation.setProduct(product);
         reservation.setTravelDate(request.getTravelDate());
         reservation.setPeopleCount(request.getPeopleCount());

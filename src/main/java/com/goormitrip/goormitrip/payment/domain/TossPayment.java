@@ -1,11 +1,17 @@
 package com.goormitrip.goormitrip.payment.domain;
 
 import java.time.LocalDateTime;
+
+import com.goormitrip.goormitrip.reservation.domain.Reservation;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,8 +49,11 @@ public class TossPayment {
 	private LocalDateTime requestedAt;
 	private LocalDateTime approvedAt;
 
-	@Column(name = "reservation_id")
+	@Column(name = "reservation_id", insertable = false, updatable = false)
 	private Long reservationId;
+
+	@OneToOne(mappedBy = "payment", fetch = FetchType.LAZY)
+	private Reservation reservation;
 
 	private LocalDateTime refundedAt;
 }
