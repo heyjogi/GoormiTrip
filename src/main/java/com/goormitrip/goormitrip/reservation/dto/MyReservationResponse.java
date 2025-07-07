@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.mypage.dto;
+package com.goormitrip.goormitrip.reservation.dto;
 
 import com.goormitrip.goormitrip.payment.domain.TossPaymentMethod;
 import com.goormitrip.goormitrip.payment.domain.TossPaymentStatus;

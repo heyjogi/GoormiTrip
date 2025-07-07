@@ -1,10 +1,11 @@
-package com.goormitrip.goormitrip.mypage.service.impl;
+package com.goormitrip.goormitrip.purchase.service.impl;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import com.goormitrip.goormitrip.mypage.dto.MyPurchaseHistoryResponse;
-import com.goormitrip.goormitrip.mypage.service.MyPurchaseService;
+
+import com.goormitrip.goormitrip.purchase.dto.MyPurchaseHistoryResponse;
+import com.goormitrip.goormitrip.purchase.service.MyPurchaseService;
 import com.goormitrip.goormitrip.payment.domain.TossPaymentStatus;
 import com.goormitrip.goormitrip.reservation.repository.ReservationRepository;
 

@@ -1,11 +1,10 @@
-package com.goormitrip.goormitrip.mypage.dto;
+package com.goormitrip.goormitrip.purchase.dto;
 
 import com.goormitrip.goormitrip.payment.domain.TossPaymentMethod;
 import com.goormitrip.goormitrip.payment.domain.TossPaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter

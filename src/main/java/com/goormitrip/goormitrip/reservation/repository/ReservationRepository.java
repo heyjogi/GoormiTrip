@@ -2,8 +2,8 @@ package com.goormitrip.goormitrip.reservation.repository;
 
 import com.goormitrip.goormitrip.reservation.domain.Reservation;
 import com.goormitrip.goormitrip.reservation.domain.ReservationStatus;
-import com.goormitrip.goormitrip.mypage.dto.MyPurchaseHistoryResponse;
-import com.goormitrip.goormitrip.mypage.dto.MyReservationResponse;
+import com.goormitrip.goormitrip.purchase.dto.MyPurchaseHistoryResponse;
+import com.goormitrip.goormitrip.reservation.dto.MyReservationResponse;
 import com.goormitrip.goormitrip.payment.domain.TossPaymentStatus;
 
 import org.springframework.data.jpa.repository.JpaRepository;
