@@ -10,7 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
-//import com.goormitrip.domain.User;
+import com.goormitrip.goormitrip.user.domain.UserEntity;
+import com.goormitrip.goormitrip.payment.domain.TossPayment;
 
 @Getter
 @Setter
@@ -23,9 +24,13 @@ public class Reservation extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "user_id", nullable = false)
-    //private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private TossPayment payment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)

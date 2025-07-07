@@ -12,7 +12,7 @@ import com.goormitrip.goormitrip.reservation.dto.ReservationUpdateResponse;
 public interface ReservationService {
     List<LocalDate> getAvailableDates(Long productId);
 
-    ReservationResponse createReservation(ReservationRequest request);
+    ReservationResponse createReservation(ReservationRequest request, Long userId);
 
     ReservationUpdateResponse updateReservation(String reservationId, ReservationUpdateRequest request, Long userId);
 

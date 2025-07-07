@@ -3,6 +3,8 @@ spring:
     name: goormitrip
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:prod}
+  thymeleaf:
+    enabled: false
 
   jpa:
     show-sql: true
