@@ -15,7 +15,7 @@ public class MyPurchaseHistoryResponse {
     private String productTitle;
     private String productThumbnail;
     private LocalDateTime approvedAt;
-    private BigDecimal totalAmount;
+    private Long totalAmount;
     private TossPaymentMethod tossPaymentMethod;
     private TossPaymentStatus tossPaymentStatus;
 
@@ -23,7 +23,7 @@ public class MyPurchaseHistoryResponse {
             String productTitle,
             String productThumbnail,
             LocalDateTime approvedAt,
-            BigDecimal totalAmount,
+            Long totalAmount,
             TossPaymentMethod tossPaymentMethod,
             TossPaymentStatus tossPaymentStatus) {
         this.productTitle = productTitle;

@@ -6,7 +6,6 @@ import com.goormitrip.goormitrip.reservation.domain.ReservationStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,13 +21,13 @@ public class MyReservationResponse {
     private ReservationStatus reservationStatus;
     private TossPaymentMethod tossPaymentMethod;
     private TossPaymentStatus tossPaymentStatus;
-    private BigDecimal totalAmount;
+    private Long totalAmount;
     private LocalDateTime approvedAt;
 
     public MyReservationResponse(Long reservationId, String productName, String productThumbnail,
             LocalDate travelDate, Integer peopleCount, ReservationStatus reservationStatus,
             TossPaymentMethod tossPaymentMethod, TossPaymentStatus tossPaymentStatus,
-            BigDecimal totalAmount, LocalDateTime approvedAt) {
+            Long totalAmount, LocalDateTime approvedAt) {
         this.reservationId = reservationId;
         this.productName = productName;
         this.productThumbnail = productThumbnail;
