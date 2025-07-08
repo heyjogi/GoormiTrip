@@ -21,7 +21,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByProductIdAndTravelDate(Long productId, LocalDate travelDate);
 
     @Query("""
-            SELECT new com.goormitrip.goormitrip.mypage.dto.MyReservationResponse(
+        SELECT new com.goormitrip.goormitrip.reservation.dto.MyReservationResponse(
             r.id, p.title, p.thumbnail, r.travelDate, r.peopleCount,
             r.status, pay.tossPaymentMethod, pay.tossPaymentStatus, pay.totalAmount, pay.approvedAt
             )
@@ -34,7 +34,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<MyReservationResponse> findReservationsWithProductAndPaymentByUserId(@Param("userId") Long userId);
 
     @Query("""
-                SELECT new com.goormitrip.goormitrip.mypage.dto.MyPurchaseHistoryResponse(
+        SELECT new com.goormitrip.goormitrip.purchase.dto.MyPurchaseHistoryResponse(
                     p.title, p.thumbnail, pay.approvedAt, pay.totalAmount, pay.tossPaymentMethod, pay.tossPaymentStatus
                 )
                 FROM TossPayment pay
