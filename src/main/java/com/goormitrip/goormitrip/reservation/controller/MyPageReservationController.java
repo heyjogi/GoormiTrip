@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.mypage.controller;
+package com.goormitrip.goormitrip.reservation.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,8 +20,8 @@ import com.goormitrip.goormitrip.reservation.service.ReservationService;
 
 import lombok.RequiredArgsConstructor;
 
-import com.goormitrip.goormitrip.mypage.dto.MyReservationResponse;
-import com.goormitrip.goormitrip.mypage.service.impl.MyReservationServiceImpl;
+import com.goormitrip.goormitrip.reservation.dto.MyReservationResponse;
+import com.goormitrip.goormitrip.reservation.service.impl.MyReservationServiceImpl;
 
 @RestController
 @RequestMapping("/mypage/reservations")

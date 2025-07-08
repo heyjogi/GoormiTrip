@@ -1,4 +1,4 @@
-package com.goormitrip.goormitrip.mypage.controller;
+package com.goormitrip.goormitrip.purchase.controller;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goormitrip.goormitrip.global.security.CustomUserDetails;
 import com.goormitrip.goormitrip.global.util.response.ApiResponse;
-import com.goormitrip.goormitrip.mypage.dto.MyPurchaseHistoryResponse;
-import com.goormitrip.goormitrip.mypage.service.MyPurchaseService;
+import com.goormitrip.goormitrip.purchase.dto.MyPurchaseHistoryResponse;
+import com.goormitrip.goormitrip.purchase.service.MyPurchaseService;
 
 @RestController
 @RequestMapping("/mypage/purchases")

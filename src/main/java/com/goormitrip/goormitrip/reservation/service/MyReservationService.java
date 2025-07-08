@@ -1,6 +1,6 @@
-package com.goormitrip.goormitrip.mypage.service;
+package com.goormitrip.goormitrip.reservation.service;
 
-import com.goormitrip.goormitrip.mypage.dto.MyReservationResponse;
+import com.goormitrip.goormitrip.reservation.dto.MyReservationResponse;
 import java.util.List;
 
 public interface MyReservationService {
